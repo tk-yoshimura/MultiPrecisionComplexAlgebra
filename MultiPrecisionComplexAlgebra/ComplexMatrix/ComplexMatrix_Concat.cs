@@ -1,4 +1,6 @@
 ﻿using MultiPrecision;
+using MultiPrecisionAlgebra;
+using MultiPrecisionComplex;
 
 namespace MultiPrecisionComplexAlgebra {
     public partial class ComplexMatrix<N> where N : struct, IConstant {
@@ -59,14 +61,26 @@ namespace MultiPrecisionComplexAlgebra {
 
                     object block = blocks[i, j];
 
-                    if (block is ComplexMatrix<N> matrix) {
+                    if (block is ComplexMatrix<N> cmatrix) {
+                        m[row_range, column_range] = cmatrix;
+                    }
+                    else if (block is Matrix<N> matrix) {
                         m[row_range, column_range] = matrix;
                     }
-                    else if (block is ComplexVector<N> vector) {
+                    else if (block is ComplexVector<N> cvector) {
+                        m[row_range, column_ranges[j].start] = cvector;
+                    }
+                    else if (block is Vector<N> vector) {
                         m[row_range, column_ranges[j].start] = vector;
+                    }
+                    else if (block is Complex<N> vmpc) {
+                        m[row_ranges[i].start, column_ranges[j].start] = vmpc;
                     }
                     else if (block is MultiPrecision<N> vmp) {
                         m[row_ranges[i].start, column_ranges[j].start] = vmp;
+                    }
+                    else if (block is System.Numerics.Complex vdc) {
+                        m[row_ranges[i].start, column_ranges[j].start] = vdc;
                     }
                     else if (block is double vd) {
                         m[row_ranges[i].start, column_ranges[j].start] = vd;
