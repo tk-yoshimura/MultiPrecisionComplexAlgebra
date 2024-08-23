@@ -1,4 +1,5 @@
 using MultiPrecision;
+using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
 
@@ -155,19 +156,21 @@ namespace MultiPrecisionComplexAlgebraTest {
                 for (int i = 0; i < 4; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
                                         
-                    (ComplexMatrix<Pow2.N4> p, ComplexMatrix<Pow2.N4> l, ComplexMatrix<Pow2.N4> u) = 
+                    (Matrix<Pow2.N4> p, ComplexMatrix<Pow2.N4> l, ComplexMatrix<Pow2.N4> u) = 
                         ComplexMatrix<Pow2.N4>.LU(m);
 
-                    ComplexMatrix<Pow2.N4> pm = p * m, lu = l * u;
+                    ComplexMatrix<Pow2.N4> plu = p * l * u;
 
                     Console.WriteLine(p);
                     Console.WriteLine(m);
                     Console.WriteLine(l);
                     Console.WriteLine(u);
 
-                    Console.WriteLine((pm - lu).Norm);
+                    Console.WriteLine(plu);
 
-                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((pm - lu).Norm) < 1e-30);
+                    Console.WriteLine((m - plu).Norm);
+
+                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - plu).Norm) < 1e-30);
                 }
             }
         }
