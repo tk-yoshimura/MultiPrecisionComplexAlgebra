@@ -1,9 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MultiPrecision;
+﻿using MultiPrecision;
 using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
-using System;
 
 namespace MultiPrecisionComplexAlgebraTests {
     public partial class ComplexMatrixTests {

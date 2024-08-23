@@ -1,5 +1,4 @@
 using MultiPrecision;
-using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
 
 namespace MultiPrecisionComplexAlgebraTests {

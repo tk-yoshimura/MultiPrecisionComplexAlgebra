@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MultiPrecision;
-using MultiPrecisionAlgebra;
+﻿using MultiPrecision;
 using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
 

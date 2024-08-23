@@ -1,5 +1,4 @@
 using MultiPrecision;
-using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
 
