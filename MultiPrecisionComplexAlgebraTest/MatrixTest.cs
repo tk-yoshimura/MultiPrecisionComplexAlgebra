@@ -104,8 +104,8 @@ namespace MultiPrecisionComplexAlgebraTest {
 
         [TestMethod]
         public void InvertTest() {
-            for (int n = 1; n <= 8; n++) {
-                for (int i = 0; i < 4; i++) {
+            for (int n = 1; n <= 16; n++) {
+                for (int i = 0; i < 16; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
                     ComplexMatrix<Pow2.N4> r = m.Inverse;
 
@@ -121,8 +121,8 @@ namespace MultiPrecisionComplexAlgebraTest {
 
         [TestMethod]
         public void PseudoInvertTest() {
-            for (int n = 2; n <= 8; n++) {
-                for (int i = 0; i < 4; i++) {
+            for (int n = 2; n <= 16; n++) {
+                for (int i = 0; i < 16; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n - 1);
                     ComplexMatrix<Pow2.N4> r = m.Inverse;
 
@@ -135,8 +135,8 @@ namespace MultiPrecisionComplexAlgebraTest {
                 }
             }
 
-            for (int n = 2; n <= 8; n++) {
-                for (int i = 0; i < 4; i++) {
+            for (int n = 2; n <= 16; n++) {
+                for (int i = 0; i < 16; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n - 1, n);
                     ComplexMatrix<Pow2.N4> r = m.Inverse;
 
@@ -152,8 +152,8 @@ namespace MultiPrecisionComplexAlgebraTest {
 
         [TestMethod]
         public void LUDecompTest() {
-            for (int n = 2; n <= 8; n++) {
-                for (int i = 0; i < 4; i++) {
+            for (int n = 2; n <= 16; n++) {
+                for (int i = 0; i < 16; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
                                         
                     (Matrix<Pow2.N4> p, ComplexMatrix<Pow2.N4> l, ComplexMatrix<Pow2.N4> u) = 
