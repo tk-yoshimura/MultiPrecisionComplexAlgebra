@@ -23,6 +23,29 @@ namespace MultiPrecisionComplexAlgebraTest {
         }
 
         [TestMethod]
+        public void CopyTest() {
+            ComplexMatrix<Pow2.N4> m1 = new(new Complex<Pow2.N4>[,]
+                {{ (1, 2), (-1, 3) } ,
+                 { (3, -4), (5, -5) } ,
+                 { (4, -7), (2, -3) }}
+            );
+
+            ComplexMatrix<Pow2.N4> m2 = m1.Copy();
+
+            Assert.AreEqual(m1, m1);
+#pragma warning disable CS1718
+            Assert.IsTrue(m1 == m1);
+#pragma warning restore CS1718
+            Assert.AreEqual(m1, m2);
+            Assert.IsTrue(m1 == m2);
+
+            m2[0, 0] = (1, 3);
+
+            Assert.AreNotEqual(m1, m2);
+            Assert.IsTrue(m1 != m2);
+        }
+
+        [TestMethod]
         public void AddTest() {
             ComplexMatrix<Pow2.N4> m1 = TestCase<Pow2.N4>.RandomMatrix(2, 3);
             ComplexMatrix<Pow2.N4> m2 = TestCase<Pow2.N4>.RandomMatrix(2, 3);
@@ -35,6 +58,20 @@ namespace MultiPrecisionComplexAlgebraTest {
             Assert.AreEqual(m1[1, 0] + m2[1, 0], m[1, 0]);
             Assert.AreEqual(m1[1, 1] + m2[1, 1], m[1, 1]);
             Assert.AreEqual(m1[1, 2] + m2[1, 2], m[1, 2]);
+        }
+
+        [TestMethod]
+        public void AddScalarTest() {
+            for (int i = 0; i < 4; i++) {
+                ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
+                Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
+                MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
+            
+                Assert.AreEqual(m[0, 0] + c, (m + c)[0, 0]);
+                Assert.AreEqual(m[0, 0] + r, (m + r)[0, 0]);
+                Assert.AreEqual(c + m[0, 0], (c + m)[0, 0]);
+                Assert.AreEqual(r + m[0, 0], (r + m)[0, 0]);
+            }
         }
 
         [TestMethod]
@@ -53,6 +90,20 @@ namespace MultiPrecisionComplexAlgebraTest {
         }
 
         [TestMethod]
+        public void SubScalarTest() {
+            for (int i = 0; i < 4; i++) {
+                ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
+                Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
+                MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
+            
+                Assert.AreEqual(m[0, 0] - c, (m - c)[0, 0]);
+                Assert.AreEqual(m[0, 0] - r, (m - r)[0, 0]);
+                Assert.AreEqual(c - m[0, 0], (c - m)[0, 0]);
+                Assert.AreEqual(r - m[0, 0], (r - m)[0, 0]);
+            }
+        }
+
+        [TestMethod]
         public void ElementwiseMulTest() {
             ComplexMatrix<Pow2.N4> m1 = TestCase<Pow2.N4>.RandomMatrix(2, 3);
             ComplexMatrix<Pow2.N4> m2 = TestCase<Pow2.N4>.RandomMatrix(2, 3);
@@ -68,6 +119,20 @@ namespace MultiPrecisionComplexAlgebraTest {
         }
 
         [TestMethod]
+        public void MulScalarTest() {
+            for (int i = 0; i < 4; i++) {
+                ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
+                Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
+                MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
+            
+                Assert.AreEqual(m[0, 0] * c, (m * c)[0, 0]);
+                Assert.AreEqual(m[0, 0] * r, (m * r)[0, 0]);
+                Assert.AreEqual(c * m[0, 0], (c * m)[0, 0]);
+                Assert.AreEqual(r * m[0, 0], (r * m)[0, 0]);
+            }
+        }
+
+        [TestMethod]
         public void ElementwiseDivTest() {
             ComplexMatrix<Pow2.N4> m1 = TestCase<Pow2.N4>.RandomMatrix(2, 3);
             ComplexMatrix<Pow2.N4> m2 = TestCase<Pow2.N4>.RandomMatrix(2, 3);
@@ -80,6 +145,50 @@ namespace MultiPrecisionComplexAlgebraTest {
             Assert.AreEqual(m1[1, 0] / m2[1, 0], m[1, 0]);
             Assert.AreEqual(m1[1, 1] / m2[1, 1], m[1, 1]);
             Assert.AreEqual(m1[1, 2] / m2[1, 2], m[1, 2]);
+        }
+
+        [TestMethod]
+        public void DivScalarTest() {
+            for (int i = 0; i < 8; i++) {
+                ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
+                Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
+                MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
+
+                if (r == 0 || c == 0) {
+                    continue;
+                }
+            
+                Assert.IsTrue(((m[0, 0] / c) - ((m / c)[0, 0])).Norm < 1e-30);
+                Assert.IsTrue(((m[0, 0] / r) - ((m / r)[0, 0])).Norm < 1e-30);
+                Assert.IsTrue(((c / m[0, 0]) - ((c / m)[0, 0])).Norm < 1e-30);
+                Assert.IsTrue(((r / m[0, 0]) - ((r / m)[0, 0])).Norm < 1e-30);
+            }
+        }
+
+        [TestMethod]
+        public void UnaryPlusTest() {
+            ComplexMatrix<Pow2.N4> m1 = TestCase<Pow2.N4>.RandomMatrix(2, 3);
+            ComplexMatrix<Pow2.N4> m2 = +m1;
+
+            Assert.AreEqual(m1[0, 0], m2[0, 0]);
+            Assert.AreEqual(m1[0, 1], m2[0, 1]);
+            Assert.AreEqual(m1[0, 2], m2[0, 2]);
+            Assert.AreEqual(m1[1, 0], m2[1, 0]);
+            Assert.AreEqual(m1[1, 1], m2[1, 1]);
+            Assert.AreEqual(m1[1, 2], m2[1, 2]);
+        }
+
+        [TestMethod]
+        public void UnaryMinusTest() {
+            ComplexMatrix<Pow2.N4> m1 = TestCase<Pow2.N4>.RandomMatrix(2, 3);
+            ComplexMatrix<Pow2.N4> m2 = -m1;
+
+            Assert.AreEqual(-m1[0, 0], m2[0, 0]);
+            Assert.AreEqual(-m1[0, 1], m2[0, 1]);
+            Assert.AreEqual(-m1[0, 2], m2[0, 2]);
+            Assert.AreEqual(-m1[1, 0], m2[1, 0]);
+            Assert.AreEqual(-m1[1, 1], m2[1, 1]);
+            Assert.AreEqual(-m1[1, 2], m2[1, 2]);
         }
 
         [TestMethod]
@@ -103,10 +212,34 @@ namespace MultiPrecisionComplexAlgebraTest {
         }
 
         [TestMethod]
+        public void VectorMulTest() {
+            ComplexVector<Pow2.N4> v = TestCase<Pow2.N4>.RandomVector(2);
+            ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
+
+            ComplexVector<Pow2.N4> x = v * m;
+
+            Assert.AreEqual(v[0] * m[0, 0] + v[1] * m[1, 0], x[0]);
+            Assert.AreEqual(v[0] * m[0, 1] + v[1] * m[1, 1], x[1]);
+            Assert.AreEqual(v[0] * m[0, 2] + v[1] * m[1, 2], x[2]);
+        }
+
+        [TestMethod]
+        public void TraceTest() {
+            ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(4, 4);
+
+            Assert.AreEqual(m[0, 0] + m[1, 1] + m[2, 2] + m[3, 3], m.Trace);
+        }
+
+        [TestMethod]
         public void InvertTest() {
             for (int n = 1; n <= 16; n++) {
                 for (int i = 0; i < 16; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
+
+                    if (m.Det.Norm == 0d) {
+                        continue;
+                    }
+
                     ComplexMatrix<Pow2.N4> r = m.Inverse;
 
                     ComplexMatrix<Pow2.N4> k = m * r;
@@ -171,6 +304,28 @@ namespace MultiPrecisionComplexAlgebraTest {
                     Console.WriteLine((m - plu).Norm);
 
                     Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - plu).Norm) < 1e-30);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void SolveTest() {
+            for (int n = 1; n <= 16; n++) {
+                for (int i = 0; i < 16; i++) {
+                    ComplexMatrix<Pow2.N4> a = TestCase<Pow2.N4>.RandomMatrix(n, n);
+                    ComplexVector<Pow2.N4> v = TestCase<Pow2.N4>.RandomVector(n);
+                    ComplexVector<Pow2.N4> r = ComplexMatrix<Pow2.N4>.Solve(a, v);
+
+                    ComplexVector<Pow2.N4> x = a.Inverse * v;
+
+                    if (a.Det.Norm == 0d) {
+                        continue;
+                    }
+
+                    Console.WriteLine(x);
+                    Console.WriteLine(r);
+
+                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((x - r).Norm) < 1e-30);
                 }
             }
         }

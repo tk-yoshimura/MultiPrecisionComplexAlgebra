@@ -216,7 +216,6 @@ namespace MultiPrecisionComplexAlgebra {
             }
         }
 
-
         public static ComplexMatrix<N> FromDiagonals(Complex<N>[] vs) {
             Complex<N>[,] v = new Complex<N>[vs.Length, vs.Length];
 
