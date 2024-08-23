@@ -15,13 +15,19 @@ namespace MultiPrecisionComplexAlgebra {
                 for (int j = 0; j < blocks.GetLength(1); j++) {
                     object block = blocks[i, j];
 
-                    if (block is ComplexMatrix<N> matrix) {
+                    if (block is ComplexMatrix<N> cmatrix) {
+                        sizes[i, j] = (cmatrix.Rows, cmatrix.Columns);
+                    }
+                    else if (block is Matrix<N> matrix) {
                         sizes[i, j] = (matrix.Rows, matrix.Columns);
                     }
-                    else if (block is ComplexVector<N> vector) {
+                    else if (block is ComplexVector<N> cvector) {
+                        sizes[i, j] = (cvector.Dim, 1);
+                    }
+                    else if (block is Vector<N> vector) {
                         sizes[i, j] = (vector.Dim, 1);
                     }
-                    else if (block is MultiPrecision<N> || block is double || block is int || block is long || block is float || block is string) {
+                    else if (block is Complex<N> || block is MultiPrecision<N> || block is double || block is int || block is long || block is float || block is string) {
                         sizes[i, j] = (1, 1);
                     }
                     else {

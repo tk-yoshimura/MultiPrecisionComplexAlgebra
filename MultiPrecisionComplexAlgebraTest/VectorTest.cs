@@ -4,7 +4,7 @@ using MultiPrecisionComplexAlgebra;
 
 namespace MultiPrecisionComplexAlgebraTest {
     [TestClass]
-    public class VectorTest {
+    public partial class ComplexVectorTests {
         [TestMethod]
         public void CreateTest() {
             ComplexVector<Pow2.N4> v = new(

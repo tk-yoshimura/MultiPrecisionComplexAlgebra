@@ -11,8 +11,8 @@ namespace MultiPrecisionComplexAlgebra {
                 if (obj is ComplexVector<N> cvector) {
                     v.AddRange(cvector.v);
                 }
-                if (obj is Vector<N> vector) {
-                    v.AddRange(vector.Select(v => (Complex<N>)v));
+                else if (obj is Vector<N> vector) {
+                    v.AddRange(vector.Select(item => (Complex<N>)item.val));
                 }
                 else if (obj is Complex<N> vmpc) {
                     v.Add(vmpc);

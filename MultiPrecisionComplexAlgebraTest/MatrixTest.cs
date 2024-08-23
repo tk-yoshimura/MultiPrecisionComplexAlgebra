@@ -5,7 +5,7 @@ using MultiPrecisionComplexAlgebra;
 
 namespace MultiPrecisionComplexAlgebraTest {
     [TestClass]
-    public class MatrixTest {
+    public partial class ComplexMatrixTests {
         [TestMethod]
         public void CreateTest() {
             ComplexMatrix<Pow2.N4> m = new(new Complex<Pow2.N4>[,]
