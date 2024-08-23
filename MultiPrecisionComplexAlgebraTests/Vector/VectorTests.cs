@@ -1,4 +1,5 @@
 using MultiPrecision;
+using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
 
 namespace MultiPrecisionComplexAlgebraTests {
@@ -38,6 +39,61 @@ namespace MultiPrecisionComplexAlgebraTests {
 
             Assert.AreNotEqual(v1, v2);
             Assert.IsTrue(v1 != v2);
+        }
+
+        [TestMethod()]
+        public void TupleTest() {
+            Complex<Pow2.N4> x, y, z, w, e0, e1, e2, e3, e4, e5, e6, e7;
+
+            ComplexVector<Pow2.N4> vector2 = (2, 4);
+            (x, y) = vector2;
+            Assert.AreEqual((2, 4), (x, y));
+
+            ComplexVector<Pow2.N4> vector3 = (2, 4, 6);
+            (x, y, z) = vector3;
+            Assert.AreEqual((2, 4, 6), (x, y, z));
+
+            ComplexVector<Pow2.N4> vector4 = (2, 4, 6, 8);
+            (x, y, z, w) = vector4;
+            Assert.AreEqual((2, 4, 6, 8), (x, y, z, w));
+
+            ComplexVector<Pow2.N4> vector5 = (2, 4, 6, 8, 1);
+            (e0, e1, e2, e3, e4) = vector5;
+            Assert.AreEqual((2, 4, 6, 8, 1), (e0, e1, e2, e3, e4));
+
+            ComplexVector<Pow2.N4> vector6 = (2, 4, 6, 8, 1, 3);
+            (e0, e1, e2, e3, e4, e5) = vector6;
+            Assert.AreEqual((2, 4, 6, 8, 1, 3), (e0, e1, e2, e3, e4, e5));
+
+            ComplexVector<Pow2.N4> vector7 = (2, 4, 6, 8, 1, 3, 5);
+            (e0, e1, e2, e3, e4, e5, e6) = vector7;
+            Assert.AreEqual((2, 4, 6, 8, 1, 3, 5), (e0, e1, e2, e3, e4, e5, e6));
+
+            ComplexVector<Pow2.N4> vector8 = (2, 4, 6, 8, 1, 3, 5, 7);
+            (e0, e1, e2, e3, e4, e5, e6, e7) = vector8;
+            Assert.AreEqual((2, 4, 6, 8, 1, 3, 5, 7), (e0, e1, e2, e3, e4, e5, e6, e7));
+
+            Assert.ThrowsException<InvalidOperationException>(() => {
+                (x, y, z) = vector2;
+            });
+            Assert.ThrowsException<InvalidOperationException>(() => {
+                (x, y, z, w) = vector3;
+            });
+            Assert.ThrowsException<InvalidOperationException>(() => {
+                (e0, e1, e2, e3, e4) = vector4;
+            });
+            Assert.ThrowsException<InvalidOperationException>(() => {
+                (e0, e1, e2, e3, e4, e5) = vector5;
+            });
+            Assert.ThrowsException<InvalidOperationException>(() => {
+                (e0, e1, e2, e3, e4, e5, e6) = vector6;
+            });
+            Assert.ThrowsException<InvalidOperationException>(() => {
+                (e0, e1, e2, e3, e4, e5, e6, e7) = vector7;
+            });
+            Assert.ThrowsException<InvalidOperationException>(() => {
+                (e0, e1, e2, e3, e4, e5, e6) = vector8;
+            });
         }
     }
 }
