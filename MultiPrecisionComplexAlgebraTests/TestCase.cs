@@ -2,7 +2,7 @@
 using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
 
-namespace MultiPrecisionComplexAlgebraTest {
+namespace MultiPrecisionComplexAlgebraTests {
     public static class TestCase<N> where N : struct, IConstant {
         static readonly Random random = new(1234);
 

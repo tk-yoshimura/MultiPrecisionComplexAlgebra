@@ -3,7 +3,7 @@ using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
 
-namespace MultiPrecisionComplexAlgebraTest {
+namespace MultiPrecisionComplexAlgebraTests {
     public partial class ComplexMatrixTests {
         [TestMethod()]
         public void ConcatTest() {
