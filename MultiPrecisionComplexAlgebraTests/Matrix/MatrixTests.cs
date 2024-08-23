@@ -43,5 +43,16 @@ namespace MultiPrecisionComplexAlgebraTests {
             Assert.AreNotEqual(m1, m2);
             Assert.IsTrue(m1 != m2);
         }
+
+        [TestMethod()]
+        public void SampleTest() {
+            // solve for v: Av=x
+            ComplexMatrix<Pow2.N4> a = new Complex<Pow2.N4>[,] { { (1, 1), (1, 2) }, { (1, 3), (4, -1) } };
+            ComplexVector<Pow2.N4> x = ((4, 2), (-1, 3));
+
+            ComplexVector<Pow2.N4> v = ComplexMatrix<Pow2.N4>.Solve(a, x);
+
+            Console.WriteLine(v);
+        }
     }
 }
