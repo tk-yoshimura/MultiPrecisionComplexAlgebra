@@ -60,7 +60,7 @@ namespace MultiPrecisionComplexAlgebraTest {
                 ComplexVector<Pow2.N4> v = TestCase<Pow2.N4>.RandomVector(2);
                 Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
                 MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
-            
+
                 Assert.AreEqual(v[0] + c, (v + c)[0]);
                 Assert.AreEqual(v[0] + r, (v + r)[0]);
                 Assert.AreEqual(c + v[0], (c + v)[0]);
@@ -87,7 +87,7 @@ namespace MultiPrecisionComplexAlgebraTest {
                 ComplexVector<Pow2.N4> v = TestCase<Pow2.N4>.RandomVector(2);
                 Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
                 MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
-            
+
                 Assert.AreEqual(v[0] - c, (v - c)[0]);
                 Assert.AreEqual(v[0] - r, (v - r)[0]);
                 Assert.AreEqual(c - v[0], (c - v)[0]);
@@ -114,7 +114,7 @@ namespace MultiPrecisionComplexAlgebraTest {
                 ComplexVector<Pow2.N4> v = TestCase<Pow2.N4>.RandomVector(2);
                 Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
                 MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
-            
+
                 Assert.AreEqual(v[0] * c, (v * c)[0]);
                 Assert.AreEqual(v[0] * r, (v * r)[0]);
                 Assert.AreEqual(c * v[0], (c * v)[0]);
@@ -141,7 +141,7 @@ namespace MultiPrecisionComplexAlgebraTest {
                 ComplexVector<Pow2.N4> v = TestCase<Pow2.N4>.RandomVector(2);
                 Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
                 MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
-            
+
                 Assert.IsTrue(((v[0] / c) - ((v / c)[0])).Norm < 1e-30);
                 Assert.IsTrue(((v[0] / r) - ((v / r)[0])).Norm < 1e-30);
                 Assert.IsTrue(((c / v[0]) - ((c / v)[0])).Norm < 1e-30);

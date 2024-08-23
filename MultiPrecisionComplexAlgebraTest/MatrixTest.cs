@@ -66,7 +66,7 @@ namespace MultiPrecisionComplexAlgebraTest {
                 ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
                 Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
                 MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
-            
+
                 Assert.AreEqual(m[0, 0] + c, (m + c)[0, 0]);
                 Assert.AreEqual(m[0, 0] + r, (m + r)[0, 0]);
                 Assert.AreEqual(c + m[0, 0], (c + m)[0, 0]);
@@ -95,7 +95,7 @@ namespace MultiPrecisionComplexAlgebraTest {
                 ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
                 Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
                 MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
-            
+
                 Assert.AreEqual(m[0, 0] - c, (m - c)[0, 0]);
                 Assert.AreEqual(m[0, 0] - r, (m - r)[0, 0]);
                 Assert.AreEqual(c - m[0, 0], (c - m)[0, 0]);
@@ -124,7 +124,7 @@ namespace MultiPrecisionComplexAlgebraTest {
                 ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
                 Complex<Pow2.N4> c = TestCase<Pow2.N4>.RandomComplex;
                 MultiPrecision<Pow2.N4> r = TestCase<Pow2.N4>.RandomScalar;
-            
+
                 Assert.AreEqual(m[0, 0] * c, (m * c)[0, 0]);
                 Assert.AreEqual(m[0, 0] * r, (m * r)[0, 0]);
                 Assert.AreEqual(c * m[0, 0], (c * m)[0, 0]);
@@ -157,7 +157,7 @@ namespace MultiPrecisionComplexAlgebraTest {
                 if (r == 0 || c == 0) {
                     continue;
                 }
-            
+
                 Assert.IsTrue(((m[0, 0] / c) - ((m / c)[0, 0])).Norm < 1e-30);
                 Assert.IsTrue(((m[0, 0] / r) - ((m / r)[0, 0])).Norm < 1e-30);
                 Assert.IsTrue(((c / m[0, 0]) - ((c / m)[0, 0])).Norm < 1e-30);
@@ -288,8 +288,8 @@ namespace MultiPrecisionComplexAlgebraTest {
             for (int n = 2; n <= 16; n++) {
                 for (int i = 0; i < 16; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
-                                        
-                    (Matrix<Pow2.N4> p, ComplexMatrix<Pow2.N4> l, ComplexMatrix<Pow2.N4> u) = 
+
+                    (Matrix<Pow2.N4> p, ComplexMatrix<Pow2.N4> l, ComplexMatrix<Pow2.N4> u) =
                         ComplexMatrix<Pow2.N4>.LU(m);
 
                     ComplexMatrix<Pow2.N4> plu = p * l * u;
