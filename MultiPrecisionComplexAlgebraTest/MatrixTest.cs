@@ -148,5 +148,28 @@ namespace MultiPrecisionComplexAlgebraTest {
                 }
             }
         }
+
+        [TestMethod]
+        public void LUDecompTest() {
+            for (int n = 2; n <= 8; n++) {
+                for (int i = 0; i < 4; i++) {
+                    ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
+                                        
+                    (ComplexMatrix<Pow2.N4> p, ComplexMatrix<Pow2.N4> l, ComplexMatrix<Pow2.N4> u) = 
+                        ComplexMatrix<Pow2.N4>.LU(m);
+
+                    ComplexMatrix<Pow2.N4> pm = p * m, lu = l * u;
+
+                    Console.WriteLine(p);
+                    Console.WriteLine(m);
+                    Console.WriteLine(l);
+                    Console.WriteLine(u);
+
+                    Console.WriteLine((pm - lu).Norm);
+
+                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((pm - lu).Norm) < 1e-30);
+                }
+            }
+        }
     }
 }

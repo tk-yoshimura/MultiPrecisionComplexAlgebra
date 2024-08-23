@@ -1,4 +1,5 @@
 ﻿using MultiPrecision;
+using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
 
 namespace MultiPrecisionComplexAlgebra {
@@ -26,12 +27,12 @@ namespace MultiPrecisionComplexAlgebra {
             ComplexMatrix<N> l = Zero(n), u = Zero(n);
 
             for (int i = 0; i < n; i++) {
-                MultiPrecision<N> pivot_abs = u.e[i, i].Norm;
+                MultiPrecision<N> pivot_abs = m.e[i, i].Norm;
                 int r = i;
 
                 for (int j = i + 1; j < n; j++) {
-                    if (u.e[j, i].Norm > pivot_abs) {
-                        pivot_abs = u.e[j, i].Norm;
+                    if (m.e[j, i].Norm > pivot_abs) {
+                        pivot_abs = m.e[j, i].Norm;
                         r = j;
                     }
                 }
@@ -77,19 +78,19 @@ namespace MultiPrecisionComplexAlgebra {
             return (ps, pivot_det, l, u);
         }
 
-        public static (ComplexMatrix<N> p, ComplexMatrix<N> l, ComplexMatrix<N> u) LU(ComplexMatrix<N> m) {
+        public static (Matrix<N> p, ComplexMatrix<N> l, ComplexMatrix<N> u) LU(ComplexMatrix<N> m) {
             (int[] ps, int pivot_det, ComplexMatrix<N> l, ComplexMatrix<N> u) = LUKernel(m);
 
             int n = m.Size;
 
             if (pivot_det == 0) {
-                return (Identity(n), l, u);
+                return (Matrix<N>.Identity(n), l, u);
             }
 
-            ComplexMatrix<N> p = Zero(n, n);
+            Matrix<N> p = Matrix<N>.Zero(n, n);
 
             for (int i = 0; i < n; i++) {
-                p[ps[i], i] = Complex<N>.One;
+                p[ps[i], i] = 1;
             }
 
             return (p, l, u);
