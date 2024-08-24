@@ -86,6 +86,19 @@ namespace MultiPrecisionComplexAlgebra {
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ComplexVector<N> Conj => Conjugate(this);
+
+        public static ComplexVector<N> Conjugate(ComplexVector<N> v) {
+            Complex<N>[] ret = new Complex<N>[v.Dim], e = v.v;
+
+            for (int i = 0; i < ret.Length; i++) {
+                ret[i] = Complex<N>.Conjugate(e[i]);
+            }
+
+            return new ComplexVector<N>(ret, cloning: false);
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ComplexMatrix<N> Horizontal {
             get {
                 ComplexMatrix<N> ret = ComplexMatrix<N>.Zero(1, Dim);

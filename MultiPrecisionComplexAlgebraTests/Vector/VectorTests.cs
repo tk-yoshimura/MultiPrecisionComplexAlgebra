@@ -41,6 +41,23 @@ namespace MultiPrecisionComplexAlgebraTests {
             Assert.IsTrue(v1 != v2);
         }
 
+        [TestMethod]
+        public void ConjugateTest() {
+            ComplexVector<Pow2.N4> v = new(
+                (1, 2),
+                (-1, 3),
+                (3, -4)
+            );
+
+            ComplexVector<Pow2.N4> v_conj = v.Conj;
+
+            Assert.AreNotEqual(v, v_conj);
+
+            Assert.AreEqual((1, -2), v_conj[0]);
+            Assert.AreEqual((-1, -3), v_conj[1]);
+            Assert.AreEqual((3, 4), v_conj[2]);
+        }
+
         [TestMethod()]
         public void TupleTest() {
             Complex<Pow2.N4> x, y, z, w, e0, e1, e2, e3, e4, e5, e6, e7;

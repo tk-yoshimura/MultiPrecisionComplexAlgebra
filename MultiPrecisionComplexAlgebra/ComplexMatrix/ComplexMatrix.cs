@@ -77,6 +77,21 @@ namespace MultiPrecisionComplexAlgebra {
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ComplexMatrix<N> Conj => Conjugate(this);
+
+        public static ComplexMatrix<N> Conjugate(ComplexMatrix<N> m) {
+            Complex<N>[,] ret = new Complex<N>[m.Rows, m.Columns], e = m.e;
+
+            for (int i = 0; i < ret.GetLength(0); i++) {
+                for (int j = 0; j < ret.GetLength(1); j++) {
+                    ret[i, j] = Complex<N>.Conjugate(e[i, j]);
+                }
+            }
+
+            return new ComplexMatrix<N>(ret, cloning: false);
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ComplexMatrix<N> T => Transpose(this);
 
         public static ComplexMatrix<N> Transpose(ComplexMatrix<N> m) {

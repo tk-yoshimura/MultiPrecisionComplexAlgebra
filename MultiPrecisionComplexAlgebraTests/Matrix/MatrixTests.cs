@@ -54,5 +54,25 @@ namespace MultiPrecisionComplexAlgebraTests {
 
             Console.WriteLine(v);
         }
+
+        [TestMethod]
+        public void ConjugateTest() {
+            ComplexMatrix<Pow2.N4> m = new(new Complex<Pow2.N4>[,]
+                {{ (1, 2), (-1, 3) } ,
+                 { (3, -4), (5, -5) } ,
+                 { (4, -7), (2, -3) }}
+            );
+
+            ComplexMatrix<Pow2.N4> m_conj = m.Conj;
+
+            Assert.AreNotEqual(m, m_conj);
+
+            Assert.AreEqual((1, -2), m_conj[0, 0]);
+            Assert.AreEqual((-1, -3), m_conj[0, 1]);
+            Assert.AreEqual((3, 4), m_conj[1, 0]);
+            Assert.AreEqual((5, 5), m_conj[1, 1]);
+            Assert.AreEqual((4, 7), m_conj[2, 0]);
+            Assert.AreEqual((2, 3), m_conj[2, 1]);
+        }
     }
 }
