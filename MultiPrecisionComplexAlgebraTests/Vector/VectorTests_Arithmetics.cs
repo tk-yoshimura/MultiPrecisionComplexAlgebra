@@ -133,5 +133,15 @@ namespace MultiPrecisionComplexAlgebraTests {
             Assert.AreEqual(-v1[0], v2[0]);
             Assert.AreEqual(-v1[1], v2[1]);
         }
+
+        [TestMethod]
+        public void SumTest() {
+            ComplexVector<Pow2.N4> m = TestCase<Pow2.N4>.RandomVector(4);
+
+            Complex<Pow2.N4> v = m.Sum, u = m.Mean;
+
+            Assert.AreEqual(m[0] + m[1] + m[2] + m[3], v);
+            Assert.AreEqual((m[0] + m[1] + m[2] + m[3]) / 4, u);
+        }
     }
 }

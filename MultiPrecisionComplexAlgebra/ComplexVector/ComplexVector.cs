@@ -155,6 +155,22 @@ namespace MultiPrecisionComplexAlgebra {
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Complex<N> Sum {
+            get {
+                Complex<N> sum = Complex<N>.Zero;
+
+                for (int i = 0; i < Dim; i++) {
+                    sum += v[i];
+                }
+
+                return sum;
+            }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Complex<N> Mean => Sum / Dim;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public long MaxExponent {
             get {
                 long max_exponent = long.MinValue;

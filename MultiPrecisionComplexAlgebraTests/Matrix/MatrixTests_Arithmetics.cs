@@ -289,5 +289,15 @@ namespace MultiPrecisionComplexAlgebraTests {
                 }
             }
         }
+
+        [TestMethod]
+        public void SumTest() {
+            ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 3);
+
+            Complex<Pow2.N4> v = m.Sum, u = m.Mean;
+
+            Assert.AreEqual(m[0, 0] + m[0, 1] + m[0, 2] + m[1, 0] + m[1, 1] + m[1, 2], v);
+            Assert.AreEqual((m[0, 0] + m[0, 1] + m[0, 2] + m[1, 0] + m[1, 1] + m[1, 2]) / 6, u);
+        }
     }
 }
