@@ -37,5 +37,31 @@ namespace MultiPrecisionComplexAlgebra {
                 }
             }
         }
+
+        public ComplexVector<N> this[int[] indexes] {
+            get {
+                Complex<N>[] ret = new Complex<N>[indexes.Length];
+                for (int i = 0; i < indexes.Length; i++) {
+                    ret[i] = v[indexes[i]];
+                }
+
+                return new(ret);
+            }
+
+            set {
+                if (value.Dim != indexes.Length) {
+                    throw new ArgumentException("invalid size", nameof(indexes));
+                }
+
+                for (int i = 0; i < indexes.Length; i++) {
+                    v[indexes[i]] = value.v[i];
+                }
+            }
+        }
+
+        public ComplexVector<N> this[IEnumerable<int> indexes] {
+            get => this[indexes.ToArray()];
+            set => this[indexes.ToArray()] = value;
+        }
     }
 }
