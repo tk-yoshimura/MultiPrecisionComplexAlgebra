@@ -74,5 +74,37 @@ namespace MultiPrecisionComplexAlgebraTests {
             Assert.AreEqual((4, 7), m_conj[2, 0]);
             Assert.AreEqual((2, 3), m_conj[2, 1]);
         }
+
+        [TestMethod()]
+        public void FlattenTest() {
+            ComplexMatrix<Pow2.N4> matrix = new Complex<Pow2.N4>[,] { { 1, 2, 3 }, { 4, 5, 6 } };
+
+            ComplexVector<Pow2.N4> vector = ComplexMatrix<Pow2.N4>.Flatten(matrix);
+
+            Assert.AreEqual(new ComplexVector<Pow2.N4>(1, 2, 3, 4, 5, 6), vector);
+        }
+
+        [TestMethod()]
+        public void GridTest() {
+            ComplexMatrix<Pow2.N4> matrix = ComplexMatrix<Pow2.N4>.Grid((-5, 4), (-3, 5));
+
+            Assert.AreEqual((10, 9), matrix.Shape);
+
+            Assert.AreEqual((-5, -3), matrix[0, 0]);
+            Assert.AreEqual((-5, -2), matrix[0, 1]);
+            Assert.AreEqual((-4, -3), matrix[1, 0]);
+
+            Assert.AreEqual((-5, 5), matrix[0, ^1]);
+            Assert.AreEqual((-5, 4), matrix[0, ^2]);
+            Assert.AreEqual((-4, 5), matrix[1, ^1]);
+
+            Assert.AreEqual((4, -3), matrix[^1, 0]);
+            Assert.AreEqual((4, -2), matrix[^1, 1]);
+            Assert.AreEqual((3, -3), matrix[^2, 0]);
+
+            Assert.AreEqual((4, 5), matrix[^1, ^1]);
+            Assert.AreEqual((4, 4), matrix[^1, ^2]);
+            Assert.AreEqual((3, 5), matrix[^2, ^1]);
+        }
     }
 }

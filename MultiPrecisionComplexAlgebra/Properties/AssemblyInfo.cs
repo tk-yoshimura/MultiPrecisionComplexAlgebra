@@ -15,6 +15,6 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("95CE4B11-C3A1-4D54-9849-1C4A3471428D")]
 
-[assembly: AssemblyVersion("1.0.3.*")]
+[assembly: AssemblyVersion("1.0.4.*")]
 
 [assembly: InternalsVisibleTo("MultiPrecisionComplexAlgebraTest")]

@@ -41,6 +41,30 @@ namespace MultiPrecisionComplexAlgebra {
             this.v = [.. v];
         }
 
+        public ComplexVector(MultiPrecisionAlgebra.Vector<N> real, MultiPrecisionAlgebra.Vector<N> imag) {
+            if (real.Dim != imag.Dim) {
+                throw new ArgumentException("mismatch size", $"{nameof(real)}, {nameof(imag)}");
+            }
+
+            this.v = new Complex<N>[real.Dim];
+
+            for (int i = 0; i < v.Length; i++) {
+                this.v[i] = (real[i], imag[i]);
+            }
+        }
+
+        public ComplexVector(MultiPrecisionAlgebra.Matrix<N> matrix) {
+            if (matrix.Columns != 2) {
+                throw new ArgumentException("invalid columns", nameof(matrix));
+            }
+
+            this.v = new Complex<N>[matrix.Rows];
+
+            for (int i = 0; i < v.Length; i++) {
+                this.v[i] = (matrix[i, 0], matrix[i, 1]);
+            }
+        }
+
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public Complex<N> X {
             get => v[0];

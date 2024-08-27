@@ -39,6 +39,20 @@ namespace MultiPrecisionComplexAlgebra {
 
         public ComplexMatrix(Complex<N>[,] m) : this(m, cloning: true) { }
 
+        public ComplexMatrix(Matrix<N> real, Matrix<N> imag) {
+            if (real.Shape != imag.Shape) {
+                throw new ArgumentException("mismatch size", $"{nameof(real)}, {nameof(imag)}");
+            }
+
+            this.e = new Complex<N>[real.Rows, real.Columns];
+
+            for (int i = 0; i < Rows; i++) {
+                for (int j = 0; j < Columns; j++) {
+                    e[i, j] = (real[i, j], imag[i, j]);
+                }
+            }
+        }
+
         public int Rows => e.GetLength(0);
 
         public int Columns => e.GetLength(1);
@@ -261,6 +275,18 @@ namespace MultiPrecisionComplexAlgebra {
             }
 
             return new ComplexMatrix<N>(v, cloning: false);
+        }
+
+        public static ComplexVector<N> Flatten(ComplexMatrix<N> matrix) {
+            Complex<N>[] v = new Complex<N>[matrix.Rows * matrix.Columns];
+
+            for (int i = 0, idx = 0; i < matrix.Rows; i++) {
+                for (int j = 0; j < matrix.Columns; j++, idx++) {
+                    v[idx] = matrix.e[i, j];
+                }
+            }
+
+            return new ComplexVector<N>(v, cloning: false);
         }
 
         public static ComplexMatrix<N> Zero(int rows, int columns) {
