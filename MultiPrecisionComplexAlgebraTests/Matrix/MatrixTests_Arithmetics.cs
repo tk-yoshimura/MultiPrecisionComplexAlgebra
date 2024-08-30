@@ -286,6 +286,12 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                     Console.WriteLine((m - qr).Norm);
 
+                    for (int row = 0; row < n; row++) { 
+                        for (int col = 0; col < row; col++) {
+                            Assert.IsTrue(Complex<Pow2.N4>.IsZero(r[row, col]));
+                        }
+                    }
+
                     Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - qr).Norm) < 1e-30);
                     Assert.IsTrue((u.Det.Norm - 1) < 1e-30);
                     Assert.IsTrue((u - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm < 1e-30);
