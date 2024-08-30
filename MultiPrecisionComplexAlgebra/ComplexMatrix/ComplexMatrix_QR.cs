@@ -35,7 +35,7 @@ namespace MultiPrecisionComplexAlgebra {
                 }
 
                 Complex<N> x = r.e[k, k];
-                u.v[k] = x + x / x.Magnitude * vnorm;
+                u.v[k] = Complex<N>.IsZero(x) ? vnorm : (x + x / x.Magnitude * vnorm);
                 MultiPrecision<N> usum = u.v[k].Norm;
 
                 for (int i = k + 1; i < n; i++) {
