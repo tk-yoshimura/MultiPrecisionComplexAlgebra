@@ -269,6 +269,31 @@ namespace MultiPrecisionComplexAlgebraTests {
         }
 
         [TestMethod]
+        public void QRDecompTest() {
+            for (int n = 2; n <= 16; n++) {
+                for (int i = 0; i < 16; i++) {
+                    ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
+
+                    (ComplexMatrix<Pow2.N4> q, ComplexMatrix<Pow2.N4> r) =
+                        ComplexMatrix<Pow2.N4>.QR(m);
+
+                    ComplexMatrix<Pow2.N4> qr = q * r;
+                    ComplexMatrix<Pow2.N4> u = q * q.T.Conj;
+
+                    Console.WriteLine(m);
+
+                    Console.WriteLine(qr);
+
+                    Console.WriteLine((m - qr).Norm);
+
+                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - qr).Norm) < 1e-30);
+                    Assert.IsTrue((u.Det.Norm - 1) < 1e-30);
+                    Assert.IsTrue((u - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm < 1e-30);
+                }
+            }
+        }
+
+        [TestMethod]
         public void SolveTest() {
             for (int n = 1; n <= 16; n++) {
                 for (int i = 0; i < 16; i++) {
