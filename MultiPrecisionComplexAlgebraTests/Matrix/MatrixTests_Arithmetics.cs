@@ -252,18 +252,18 @@ namespace MultiPrecisionComplexAlgebraTests {
                     (Matrix<Pow2.N4> p, ComplexMatrix<Pow2.N4> l, ComplexMatrix<Pow2.N4> u) =
                         ComplexMatrix<Pow2.N4>.LU(m);
 
-                    ComplexMatrix<Pow2.N4> plu = p * l * u;
+                    ComplexMatrix<Pow2.N4> lu = l * u;
 
                     Console.WriteLine(p);
                     Console.WriteLine(m);
                     Console.WriteLine(l);
                     Console.WriteLine(u);
 
-                    Console.WriteLine(plu);
+                    Console.WriteLine(lu);
 
-                    Console.WriteLine((m - plu).Norm);
+                    Console.WriteLine((p * m - lu).Norm);
 
-                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - plu).Norm) < 1e-30);
+                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((p * m - lu).Norm) < 1e-30);
                 }
             }
         }

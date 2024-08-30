@@ -90,7 +90,7 @@ namespace MultiPrecisionComplexAlgebra {
             Matrix<N> p = Matrix<N>.Zero(n, n);
 
             for (int i = 0; i < n; i++) {
-                p[ps[i], i] = 1;
+                p[i, ps[i]] = MultiPrecision<N>.One;
             }
 
             return (p, l, u);
