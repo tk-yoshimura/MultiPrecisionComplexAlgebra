@@ -300,7 +300,7 @@ namespace MultiPrecisionComplexAlgebraTests {
         }
 
         [TestMethod]
-        public void QRDecompErrorTest() {
+        public void QRDecompNasZeroTest() {
             ComplexMatrix<Pow2.N4> m = new Complex<Pow2.N4>[,]{
                  { "0",     "10+2i", "2-3i",  "3+3i",  "-5+4i"  },
                  { "6-1i",  "9+6i",  "-3-7i", "-1",    "-9+10i" }, 
