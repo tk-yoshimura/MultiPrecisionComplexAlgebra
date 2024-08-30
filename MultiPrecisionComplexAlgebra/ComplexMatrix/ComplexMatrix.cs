@@ -91,6 +91,36 @@ namespace MultiPrecisionComplexAlgebra {
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Matrix<N> R {
+            get {
+                MultiPrecision<N>[,] ret = new MultiPrecision<N>[Rows, Columns];
+
+                for (int i = 0; i < Rows; i++) {
+                    for (int j = 0; j < Columns; j++) {
+                        ret[i, j] = e[i, j].R;
+                    }
+                }
+
+                return ret;
+            }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Matrix<N> I {
+            get {
+                MultiPrecision<N>[,] ret = new MultiPrecision<N>[Rows, Columns];
+
+                for (int i = 0; i < Rows; i++) {
+                    for (int j = 0; j < Columns; j++) {
+                        ret[i, j] = e[i, j].I;
+                    }
+                }
+
+                return ret;
+            }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ComplexMatrix<N> Conj => Conjugate(this);
 
         public static ComplexMatrix<N> Conjugate(ComplexMatrix<N> m) {

@@ -89,6 +89,20 @@ namespace MultiPrecisionComplexAlgebra {
             set => v[3] = value;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public MultiPrecisionAlgebra.Vector<N> R {
+            get {
+                return new(v.Select(c => c.R));
+            }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public MultiPrecisionAlgebra.Vector<N> I {
+            get {
+                return new(v.Select(c => c.R));
+            }
+        }
+
         public int Dim => v.Length;
 
         public static implicit operator Complex<N>[](ComplexVector<N> vector) {
