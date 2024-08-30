@@ -143,5 +143,17 @@ namespace MultiPrecisionComplexAlgebraTests {
             Assert.AreEqual(m[0] + m[1] + m[2] + m[3], v);
             Assert.AreEqual((m[0] + m[1] + m[2] + m[3]) / 4, u);
         }
+
+        [TestMethod]
+        public void DotTest() {
+            ComplexVector<Pow2.N4> a = new Complex<Pow2.N4>[] { (2, 4), (-4, 2), 0 };
+            ComplexVector<Pow2.N4> b = new Complex<Pow2.N4>[] { (9, 3), (6, 6), 9 };
+
+            Complex<Pow2.N4> v1 = ComplexVector<Pow2.N4>.Dot(a, b);
+            Complex<Pow2.N4> v2 = ComplexVector<Pow2.N4>.Dot(b, a);
+
+            Assert.AreEqual((18, 66), v1);
+            Assert.AreEqual((18, -66), v2);
+        }
     }
 }

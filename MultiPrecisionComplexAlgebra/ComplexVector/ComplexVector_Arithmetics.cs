@@ -193,7 +193,7 @@ namespace MultiPrecisionComplexAlgebra {
             Complex<N> sum = Complex<N>.Zero;
 
             for (int i = 0, dim = vector1.Dim; i < dim; i++) {
-                sum += vector1.v[i] * vector2.v[i];
+                sum += vector1.v[i] * Complex<N>.Conjugate(vector2.v[i]);
             }
 
             return sum;
