@@ -121,6 +121,21 @@ namespace MultiPrecisionComplexAlgebra {
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ComplexMatrix<N> H => Adjoint(this);
+
+        public static ComplexMatrix<N> Adjoint(ComplexMatrix<N> m) {
+            ComplexMatrix<N> ret = new(m.Columns, m.Rows);
+
+            for (int i = 0; i < m.Rows; i++) {
+                for (int j = 0; j < m.Columns; j++) {
+                    ret.e[j, i] = Complex<N>.Conjugate(m.e[i, j]);
+                }
+            }
+
+            return ret;
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ComplexMatrix<N> Inverse => Invert(this);
 
         public static ComplexMatrix<N> Invert(ComplexMatrix<N> m) {
@@ -396,6 +411,22 @@ namespace MultiPrecisionComplexAlgebra {
             for (int i = 0; i < matrix.Rows; i++) {
                 for (int j = i + 1; j < matrix.Columns; j++) {
                     if (matrix.e[i, j] != matrix.e[j, i]) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public static bool IsHermitian(ComplexMatrix<N> matrix) {
+            if (!IsSquare(matrix)) {
+                return false;
+            }
+
+            for (int i = 0; i < matrix.Rows; i++) {
+                for (int j = i; j < matrix.Columns; j++) {
+                    if (matrix.e[i, j] != Complex<N>.Conjugate(matrix.e[j, i])) {
                         return false;
                     }
                 }

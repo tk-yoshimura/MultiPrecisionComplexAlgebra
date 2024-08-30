@@ -75,6 +75,43 @@ namespace MultiPrecisionComplexAlgebraTests {
             Assert.AreEqual((2, 3), m_conj[2, 1]);
         }
 
+        [TestMethod]
+        public void HermitianTest() {
+            ComplexMatrix<Pow2.N4> m = new(new Complex<Pow2.N4>[,]
+                {{ (1, 2), (-1, 3) } ,
+                 { (3, -4), (5, -5) } ,
+                 { (4, -7), (2, -3) }}
+            );
+
+            ComplexMatrix<Pow2.N4> m_h = m.H;
+
+            Assert.AreNotEqual(m, m_h);
+
+            Assert.AreEqual((1, -2),  m_h[0, 0]);
+            Assert.AreEqual((3, 4),   m_h[0, 1]);
+            Assert.AreEqual((4, 7),   m_h[0, 2]);
+            Assert.AreEqual((-1, -3), m_h[1, 0]);
+            Assert.AreEqual((5, 5),   m_h[1, 1]);
+            Assert.AreEqual((2, 3),   m_h[1, 2]);
+        }
+
+        [TestMethod]
+        public void IsHermitianTest() {
+            ComplexMatrix<Pow2.N4> m = new(new Complex<Pow2.N4>[,]
+                {{ 3, (2, 3), (0, -4) } ,
+                 { (2, -3), -3, (7, 1) } ,
+                 { (0, 4), (7, -1), 4 }}
+            );
+
+            Assert.IsTrue(ComplexMatrix<Pow2.N4>.IsHermitian(m));
+
+            m[2, 2] = (4, 1);
+
+            ComplexMatrix<Pow2.N4> mh = m.H;
+
+            Assert.IsFalse(ComplexMatrix<Pow2.N4>.IsHermitian(m));
+        }
+
         [TestMethod()]
         public void FlattenTest() {
             ComplexMatrix<Pow2.N4> matrix = new Complex<Pow2.N4>[,] { { 1, 2, 3 }, { 4, 5, 6 } };

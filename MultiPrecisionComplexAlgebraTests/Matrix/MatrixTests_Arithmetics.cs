@@ -278,7 +278,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                         ComplexMatrix<Pow2.N4>.QR(m);
 
                     ComplexMatrix<Pow2.N4> qr = q * r;
-                    ComplexMatrix<Pow2.N4> u = q * q.T.Conj;
+                    ComplexMatrix<Pow2.N4> u = q * q.H;
 
                     Console.WriteLine(m);
 
@@ -313,7 +313,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                 ComplexMatrix<Pow2.N4>.QR(m);
 
             ComplexMatrix<Pow2.N4> qr = q * r;
-            ComplexMatrix<Pow2.N4> u = q * q.T.Conj;
+            ComplexMatrix<Pow2.N4> u = q * q.H;
 
             Console.WriteLine(m);
 
