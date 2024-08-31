@@ -47,9 +47,9 @@ namespace MultiPrecisionComplexAlgebraTests {
         [TestMethod()]
         public void EigenValuesN3Test() {
             ComplexMatrix<Pow2.N4> m = new(new Complex<Pow2.N4>[,]
-                { {       7,  "7-9i",   "2+1i" },
-                  { "-6+2i", "-6-5i", "-2-10i" },
-                  { "-9-5i",  "8+1i", "4i" } }
+                {{ "-1-4i", "-2+1i", "-6-2i" }, 
+                 { "7+6i", "2+4i", "-6+6i" }, 
+                 { "6-2i", "4-1i", "7+1i" } }
             );
 
             (Complex<Pow2.N4>[] vals, ComplexVector<Pow2.N4>[] vecs) = ComplexMatrix<Pow2.N4>.EigenValueVectors(m);

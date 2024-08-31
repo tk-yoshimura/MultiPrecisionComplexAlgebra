@@ -80,7 +80,7 @@ namespace MultiPrecisionComplexAlgebra {
 
                 for (int i = notconverged - 1; i >= 0; i--) {
                     if (i >= 2 && iter_qr < precision_level) {
-                        if (eigen_diffnorms[i].Exponent > -8 || eigen_diffnorms_prev[i] > eigen_diffnorms[i]) {
+                        if (eigen_diffnorms[i].Exponent > -MultiPrecision<N>.Bits + 8 || eigen_diffnorms_prev[i] > eigen_diffnorms[i]) {
                             break;
                         }
                     }
@@ -137,8 +137,8 @@ namespace MultiPrecisionComplexAlgebra {
 
             Complex<N> d = Complex<N>.Sqrt(c * c + 4 * m[0, 1] * m[1, 0]);
 
-            Complex<N> val0 = (b - d) / 2;
-            Complex<N> val1 = (b + d) / 2;
+            Complex<N> val0 = (b + d) / 2;
+            Complex<N> val1 = (b - d) / 2;
 
             return [val0, val1];
         }
@@ -158,11 +158,11 @@ namespace MultiPrecisionComplexAlgebra {
 
                 Complex<N> d = Complex<N>.Sqrt(c * c + 4 * m[0, 1] * m[1, 0]);
 
-                Complex<N> val0 = (b - d) / 2;
-                Complex<N> val1 = (b + d) / 2;
+                Complex<N> val0 = (b + d) / 2;
+                Complex<N> val1 = (b - d) / 2;
 
-                ComplexVector<N> vec0 = new ComplexVector<N>((c - d) / (2 * m[1, 0]), 1).Normal;
-                ComplexVector<N> vec1 = new ComplexVector<N>((c + d) / (2 * m[1, 0]), 1).Normal;
+                ComplexVector<N> vec0 = new ComplexVector<N>((c + d) / (2 * m[1, 0]), 1).Normal;
+                ComplexVector<N> vec1 = new ComplexVector<N>((c - d) / (2 * m[1, 0]), 1).Normal;
 
                 return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { vec0, vec1 });
             }
