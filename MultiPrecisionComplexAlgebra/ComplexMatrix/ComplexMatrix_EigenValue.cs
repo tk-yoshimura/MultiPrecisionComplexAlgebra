@@ -116,11 +116,11 @@ namespace MultiPrecisionComplexAlgebra {
                     ComplexVector<N> lower = d[^1, ..^1];
                     Complex<N> eigen = d[^1, ^1];
 
-                    if (lower.MaxExponent < long.Min(eigen.R.Exponent, eigen.I.Exponent) - MultiPrecision<N>.Bits) {
+                    if (lower.MaxExponent < long.Max(eigen.R.Exponent, eigen.I.Exponent) - MultiPrecision<N>.Bits) {
                         d = d[..^1, ..^1];
                     }
                 }
-                                
+
                 eigen_values_prev[..notconverged] = eigen_values[..notconverged];
                 eigen_diffnorms_prev[..notconverged] = eigen_diffnorms[..notconverged];
             }
@@ -170,10 +170,15 @@ namespace MultiPrecisionComplexAlgebra {
                 Complex<N> val0 = m[0, 0];
                 Complex<N> val1 = m[1, 1];
 
-                ComplexVector<N> vec0 = (1, 0);
-                ComplexVector<N> vec1 = new ComplexVector<N>(m[0, 1] / (m[1, 1] - m[0, 0]), 1).Normal;
+                if (val0 != val1) {
+                    ComplexVector<N> vec0 = (1, 0);
+                    ComplexVector<N> vec1 = new ComplexVector<N>(m[0, 1] / (val1 - val0), 1).Normal;
 
-                return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { vec0, vec1 });
+                    return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { vec0, vec1 });
+                }
+                else { 
+                    return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { (1, 0), (0, 1) });
+                }
             }
         }
     }
