@@ -42,41 +42,43 @@ namespace MultiPrecisionComplexAlgebra {
 
             precision_level = precision_level >= 0 ? precision_level : MultiPrecision<N>.Length * m.Size * 8;
 
-            int n = m.Size, k = n;
+            int n = m.Size, notconverged = n;
             long exponent = m.MaxExponent;
             ComplexMatrix<N> u = ScaleB(m, -exponent);
             MultiPrecision<N> eps = MultiPrecision<N>.Ldexp(1, -MultiPrecision<N>.Bits + 8);
 
-            ComplexVector<N> eigen_values = ComplexVector<N>.Fill(n, 1), eigen_values_prev;
-            Vector<N> eigen_diffnorms = Vector<N>.Fill(n, MultiPrecision<N>.PositiveInfinity), eigen_diffnorms_prev;
+            ComplexVector<N> eigen_values = ComplexVector<N>.Fill(n, 1);
+            ComplexVector<N> eigen_values_prev = eigen_values.Copy();
+
+            Vector<N> eigen_diffnorms = Vector<N>.Fill(n, MultiPrecision<N>.PositiveInfinity);
+            Vector<N> eigen_diffnorms_prev = eigen_diffnorms.Copy();
+
             ComplexVector<N>[] eigen_vectors = Identity(n).Horizontals;
 
             ComplexMatrix<N> d = u;
 
             for (int iter_qr = 0; iter_qr <= precision_level; iter_qr++) {
-                eigen_values_prev = eigen_values.Copy();
-                eigen_diffnorms_prev = eigen_diffnorms.Copy();
-
                 if (d.Size > 2) {
                     Complex<N>[] mu2x2 = EigenValues2x2(d[^2.., ^2..]);
                     Complex<N> d_kk = d[^1, ^1];
                     Complex<N> mu = (d_kk - mu2x2[0]).Norm < (d_kk - mu2x2[1]).Norm
                         ? mu2x2[0] : mu2x2[1];
+
                     (ComplexMatrix<N> q, ComplexMatrix<N> r) = QR(DiagonalAdd(d, -mu));
                     d = DiagonalAdd(r * q, mu);
 
-                    eigen_values[..d.Size] = d.Diagonals;
+                    eigen_values[..d.Size] = d.Diagonals[..d.Size];
                 }
                 else {
                     eigen_values[..2] = EigenValues(d);
                 }
 
-                for (int i = k - 1; i >= 0; i--) {
+                for (int i = notconverged - 1; i >= 0; i--) {
                     MultiPrecision<N> eigen_diffnorm = (eigen_values[i] - eigen_values_prev[i]).Norm;
                     eigen_diffnorms[i] = eigen_diffnorm;
                 }
 
-                for (int i = k - 1; i >= 0; i--) {
+                for (int i = notconverged - 1; i >= 0; i--) {
                     if (i >= 2 && iter_qr < precision_level) {
                         if (eigen_diffnorms[i].Exponent > -8 || eigen_diffnorms_prev[i] > eigen_diffnorms[i]) {
                             break;
@@ -87,7 +89,7 @@ namespace MultiPrecisionComplexAlgebra {
 
                     MultiPrecision<N> norm, norm_prev = MultiPrecision<N>.NaN;
                     ComplexVector<N> x = ComplexVector<N>.Fill(n, 0.125), x_prev = x;
-                    x[i] = MultiPrecision<N>.One;
+                    x[i] = Complex<N>.One;
 
                     for (int iter_vector = 0; iter_vector < precision_level; iter_vector++) {
                         x = (g * x).Normal;
@@ -103,14 +105,14 @@ namespace MultiPrecisionComplexAlgebra {
                     }
 
                     eigen_vectors[i] = x;
-                    k--;
+                    notconverged--;
                 }
 
-                if (k <= 0) {
+                if (notconverged <= 0) {
                     break;
                 }
 
-                if (k > 2) {
+                if (d.Size > 2) {
                     ComplexVector<N> lower = d[^1, ..^1];
                     Complex<N> eigen = d[^1, ^1];
 
@@ -118,6 +120,9 @@ namespace MultiPrecisionComplexAlgebra {
                         d = d[..^1, ..^1];
                     }
                 }
+                                
+                eigen_values_prev[..notconverged] = eigen_values[..notconverged];
+                eigen_diffnorms_prev[..notconverged] = eigen_diffnorms[..notconverged];
             }
 
             eigen_values = ComplexVector<N>.ScaleB(eigen_values, exponent);
