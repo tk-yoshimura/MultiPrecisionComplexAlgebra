@@ -8,6 +8,43 @@ using System;
 namespace MultiPrecisionComplexAlgebraTests {
     public partial class ComplexMatrixTests {
         [TestMethod()]
+        public void EigenValuesN2Test() {
+            for (int i = 0; i < 64; i++) {
+                ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 2);
+
+                if (m.Any(v => Complex<Pow2.N4>.IsZero(v.val))) {
+                    continue;
+                }
+
+                if (i < 4) {
+                    m[1, 0] = 0;
+                }
+
+                (Complex<Pow2.N4>[] vals, ComplexVector<Pow2.N4>[] vecs) = ComplexMatrix<Pow2.N4>.EigenValueVectors(m);
+
+                Console.WriteLine(m);
+
+                for (int j = 0; j < vals.Length; j++) {
+                    Complex<Pow2.N4> val = vals[j];
+                    ComplexVector<Pow2.N4> vec = vecs[j];
+
+                    ComplexVector<Pow2.N4> a = m * vec;
+                    ComplexVector<Pow2.N4> b = val * vec;
+
+                    Console.WriteLine(vec);
+                    Console.WriteLine(val);
+                    Console.WriteLine(a);
+                    Console.WriteLine(b);
+                    Console.WriteLine("");
+
+                    Assert.IsTrue((a - b).Norm < 1e-35);
+                }
+
+                Console.WriteLine("");
+            }
+        }
+
+        [TestMethod()]
         public void EigenValuesN3Test() {
             ComplexMatrix<Pow2.N4> m = new(new Complex<Pow2.N4>[,]
                 { {       7,  "7-9i",   "2+1i" },
@@ -29,7 +66,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                 Console.WriteLine(a);
                 Console.WriteLine(b);
 
-                Assert.IsTrue((a - b).Norm < 1e-4);
+                Assert.IsTrue((a - b).Norm < 1e-35);
             }
         }
 
@@ -56,7 +93,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                 Console.WriteLine(a);
                 Console.WriteLine(b);
 
-                Assert.IsTrue((a - b).Norm < 1e-4);
+                Assert.IsTrue((a - b).Norm < 1e-35);
             }
         }
 
@@ -66,7 +103,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                 for (int i = 0; i < 16; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
 
-                    if(m.Any(v => Complex<Pow2.N4>.IsZero(v.val))){
+                    if (m.Any(v => Complex<Pow2.N4>.IsZero(v.val))) {
                         continue;
                     }
 
@@ -87,48 +124,11 @@ namespace MultiPrecisionComplexAlgebraTests {
                         Console.WriteLine(b);
                         Console.WriteLine("");
 
-                        Assert.IsTrue((a - b).Norm < 1e-2);
+                        Assert.IsTrue((a - b).Norm < 1e-34);
                     }
 
                     Console.WriteLine("");
                 }
-            }
-        }
-
-        [TestMethod()]
-        public void EigenValuesN2Test() {
-            for (int i = 0; i < 64; i++) {
-                ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(2, 2);
-
-                if(m.Any(v => Complex<Pow2.N4>.IsZero(v.val))){
-                    continue;
-                }
-
-                if (i < 4) {
-                    m[1, 0] = 0;
-                }
-
-                (Complex<Pow2.N4>[] vals, ComplexVector<Pow2.N4>[] vecs) = ComplexMatrix<Pow2.N4>.EigenValueVectors(m);
-
-                Console.WriteLine(m);
-
-                for (int j = 0; j < vals.Length; j++) {
-                    Complex<Pow2.N4> val = vals[j];
-                    ComplexVector<Pow2.N4> vec = vecs[j];
-
-                    ComplexVector<Pow2.N4> a = m * vec;
-                    ComplexVector<Pow2.N4> b = val * vec;
-
-                    Console.WriteLine(vec);
-                    Console.WriteLine(val);
-                    Console.WriteLine(a);
-                    Console.WriteLine(b);
-                    Console.WriteLine("");
-
-                    Assert.IsTrue((a - b).Norm < 1e-2);
-                }
-
-                Console.WriteLine("");
             }
         }
     }
