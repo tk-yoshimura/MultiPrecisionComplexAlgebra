@@ -275,6 +275,18 @@ namespace MultiPrecisionComplexAlgebra {
             return (1 / r) * matrix;
         }
 
+        public static ComplexMatrix<N> DiagonalAdd(ComplexMatrix<N> matrix, Complex<N> c) {
+            int n = int.Min(matrix.Rows, matrix.Columns);
+            
+            ComplexMatrix<N> ret = matrix.Copy();
+
+            for (int i = 0; i < n; i++) {
+                ret[i, i] += c;
+            }
+
+            return ret;
+        }
+
         public static bool operator ==(ComplexMatrix<N> matrix1, ComplexMatrix<N> matrix2) {
             if (ReferenceEquals(matrix1, matrix2)) {
                 return true;
