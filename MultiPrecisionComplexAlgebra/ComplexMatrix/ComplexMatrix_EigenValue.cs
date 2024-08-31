@@ -22,7 +22,6 @@ namespace MultiPrecisionComplexAlgebra {
            int n = m.Size, notconverged = n;
             long exponent = m.MaxExponent;
             ComplexMatrix<N> u = ScaleB(m, -exponent);
-            MultiPrecision<N> eps = MultiPrecision<N>.Ldexp(1, -MultiPrecision<N>.Bits + 8);
 
             ComplexVector<N> eigen_values = ComplexVector<N>.Fill(n, 1);
             ComplexVector<N> eigen_values_prev = eigen_values.Copy();
@@ -102,7 +101,7 @@ namespace MultiPrecisionComplexAlgebra {
             int n = m.Size, notconverged = n;
             long exponent = m.MaxExponent;
             ComplexMatrix<N> u = ScaleB(m, -exponent);
-            MultiPrecision<N> eps = MultiPrecision<N>.Ldexp(1, -MultiPrecision<N>.Bits + 8);
+            MultiPrecision<N> eps = MultiPrecision<N>.Ldexp(1, -MultiPrecision<N>.Bits + 32);
 
             ComplexVector<N> eigen_values = ComplexVector<N>.Fill(n, 1);
             ComplexVector<N> eigen_values_prev = eigen_values.Copy();

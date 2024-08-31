@@ -100,7 +100,7 @@ namespace MultiPrecisionComplexAlgebraTests {
         [TestMethod()]
         public void EigenValuesTest() {
             for (int n = 1; n <= 16; n++) {
-                for (int i = 0; i < 16; i++) {
+                for (int i = 0; i < 32; i++) {
                     ComplexMatrix<Pow2.N4> m = TestCase<Pow2.N4>.RandomMatrix(n, n);
 
                     if (m.Any(v => Complex<Pow2.N4>.IsZero(v.val))) {
