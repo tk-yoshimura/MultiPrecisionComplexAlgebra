@@ -240,7 +240,7 @@ namespace MultiPrecisionComplexAlgebra {
         }
 
         private static Complex<N>[] SortEigenByNorm(Complex<N>[] eigen_values) {
-            Complex<N>[] eigen_values_sorted = eigen_values.OrderBy(item => item.Norm).ToArray();
+            Complex<N>[] eigen_values_sorted = [.. eigen_values.OrderByDescending(item => item.Norm)];
 
             return eigen_values_sorted;
         }
@@ -249,7 +249,7 @@ namespace MultiPrecisionComplexAlgebra {
             Debug.Assert(eigens.eigen_values.Length == eigens.eigen_vectors.Length);
 
             IOrderedEnumerable<(Complex<N> val, ComplexVector<N> vec)> eigens_sorted = 
-                eigens.eigen_values.Zip(eigens.eigen_vectors).OrderBy(item => item.First.Norm);
+                eigens.eigen_values.Zip(eigens.eigen_vectors).OrderByDescending(item => item.First.Norm);
 
             Complex<N>[] eigen_values_sorted = eigens_sorted.Select(item => item.val).ToArray();
             ComplexVector<N>[] eigen_vectors_sorted = eigens_sorted.Select(item => item.vec).ToArray();
