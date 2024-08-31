@@ -4,7 +4,6 @@ using MultiPrecisionComplex;
 using System.Diagnostics;
 
 namespace MultiPrecisionComplexAlgebra {
-    /// <summary>行列クラス</summary>
     public partial class ComplexMatrix<N> where N : struct, IConstant {
         public static Complex<N>[] EigenValues(ComplexMatrix<N> m, int precision_level = -1) {
             if (!IsSquare(m) || m.Size < 1) {
