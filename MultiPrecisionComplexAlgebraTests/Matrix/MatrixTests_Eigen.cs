@@ -107,7 +107,10 @@ namespace MultiPrecisionComplexAlgebraTests {
                         continue;
                     }
 
+                    Complex<Pow2.N4>[] vals_withoutvec = ComplexMatrix<Pow2.N4>.EigenValues(m);
                     (Complex<Pow2.N4>[] vals, ComplexVector<Pow2.N4>[] vecs) = ComplexMatrix<Pow2.N4>.EigenValueVectors(m);
+
+                    CollectionAssert.AreEqual(vals_withoutvec, vals);
 
                     Console.WriteLine(m);
 
