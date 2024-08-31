@@ -14,18 +14,75 @@ namespace MultiPrecisionComplexAlgebra {
                 return [m[0, 0]];
             }
             if (m.Size == 2) {
-                return EigenValues2x2(m);
+                return SortEigenByNorm(EigenValues2x2(m));
             }
 
             precision_level = precision_level >= 0 ? precision_level : MultiPrecision<N>.Length * m.Size * 8;
 
+           int n = m.Size, notconverged = n;
+            long exponent = m.MaxExponent;
+            ComplexMatrix<N> u = ScaleB(m, -exponent);
+            MultiPrecision<N> eps = MultiPrecision<N>.Ldexp(1, -MultiPrecision<N>.Bits + 8);
 
-            for (int iter = 0; iter < precision_level; iter++) {
-                (ComplexMatrix<N> q, ComplexMatrix<N> r) = QR(m);
-                m = r * q;
+            ComplexVector<N> eigen_values = ComplexVector<N>.Fill(n, 1);
+            ComplexVector<N> eigen_values_prev = eigen_values.Copy();
+
+            Vector<N> eigen_diffnorms = Vector<N>.Fill(n, MultiPrecision<N>.PositiveInfinity);
+            Vector<N> eigen_diffnorms_prev = eigen_diffnorms.Copy();
+
+            ComplexMatrix<N> d = u;
+
+            for (int iter_qr = 0; iter_qr <= precision_level; iter_qr++) {
+                if (d.Size > 2) {
+                    Complex<N>[] mu2x2 = EigenValues2x2(d[^2.., ^2..]);
+                    Complex<N> d_kk = d[^1, ^1];
+                    Complex<N> mu = (d_kk - mu2x2[0]).Norm < (d_kk - mu2x2[1]).Norm
+                        ? mu2x2[0] : mu2x2[1];
+
+                    (ComplexMatrix<N> q, ComplexMatrix<N> r) = QR(DiagonalAdd(d, -mu));
+                    d = DiagonalAdd(r * q, mu);
+
+                    eigen_values[..d.Size] = d.Diagonals[..d.Size];
+                }
+                else {
+                    eigen_values[..2] = EigenValues(d);
+                }
+
+                for (int i = notconverged - 1; i >= 0; i--) {
+                    MultiPrecision<N> eigen_diffnorm = (eigen_values[i] - eigen_values_prev[i]).Norm;
+                    eigen_diffnorms[i] = eigen_diffnorm;
+                }
+
+                for (int i = notconverged - 1; i >= 0; i--) {
+                    if (i >= 2 && iter_qr < precision_level) {
+                        if (eigen_diffnorms[i].Exponent > -MultiPrecision<N>.Bits + 8 || eigen_diffnorms_prev[i] > eigen_diffnorms[i]) {
+                            break;
+                        }
+                    }
+
+                    notconverged--;
+                }
+
+                if (notconverged <= 0) {
+                    break;
+                }
+
+                if (d.Size > 2) {
+                    ComplexVector<N> lower = d[^1, ..^1];
+                    Complex<N> eigen = d[^1, ^1];
+
+                    if (lower.MaxExponent < long.Max(eigen.R.Exponent, eigen.I.Exponent) - MultiPrecision<N>.Bits) {
+                        d = d[..^1, ..^1];
+                    }
+                }
+
+                eigen_values_prev[..notconverged] = eigen_values[..notconverged];
+                eigen_diffnorms_prev[..notconverged] = eigen_diffnorms[..notconverged];
             }
 
-            return m.Diagonals;
+            eigen_values = ComplexVector<N>.ScaleB(eigen_values, exponent);
+
+            return SortEigenByNorm(eigen_values);
         }
 
         public static (Complex<N>[] eigen_values, ComplexVector<N>[] eigen_vectors) EigenValueVectors(ComplexMatrix<N> m, int precision_level = -1) {
@@ -37,7 +94,7 @@ namespace MultiPrecisionComplexAlgebra {
                 return ([m[0, 0]], [new ComplexVector<N>(1)]);
             }
             if (m.Size == 2) {
-                return EigenValueVectors2x2(m);
+                return SortEigenByNorm(EigenValueVectors2x2(m));
             }
 
             precision_level = precision_level >= 0 ? precision_level : MultiPrecision<N>.Length * m.Size * 8;
@@ -85,22 +142,22 @@ namespace MultiPrecisionComplexAlgebra {
                         }
                     }
 
-                    ComplexMatrix<N> g = DiagonalAdd(u, -eigen_values[i] + eps).Inverse;
+                    Complex<N> eigen_val = eigen_values[i];
+                    ComplexMatrix<N> g = DiagonalAdd(u, -eigen_val + eps).Inverse;
 
                     MultiPrecision<N> norm, norm_prev = MultiPrecision<N>.NaN;
-                    ComplexVector<N> x = ComplexVector<N>.Fill(n, 0.125), x_prev = x;
+                    ComplexVector<N> x = ComplexVector<N>.Fill(n, 0.125);
                     x[i] = Complex<N>.One;
 
                     for (int iter_vector = 0; iter_vector < precision_level; iter_vector++) {
                         x = (g * x).Normal;
 
-                        norm = (x - x_prev).Norm;
+                        norm = (u * x - eigen_val * x).Norm;
 
-                        if (norm.Exponent < -4 && norm >= norm_prev) {
+                        if (norm.Exponent < -MultiPrecision<N>.Bits / 2 && norm >= norm_prev) {
                             break;
                         }
 
-                        x_prev = x;
                         norm_prev = norm;
                     }
 
@@ -127,7 +184,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             eigen_values = ComplexVector<N>.ScaleB(eigen_values, exponent);
 
-            return (eigen_values, eigen_vectors);
+            return SortEigenByNorm((eigen_values, eigen_vectors));
         }
 
         private static Complex<N>[] EigenValues2x2(ComplexMatrix<N> m) {
@@ -180,6 +237,24 @@ namespace MultiPrecisionComplexAlgebra {
                     return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { (1, 0), (0, 1) });
                 }
             }
+        }
+
+        private static Complex<N>[] SortEigenByNorm(Complex<N>[] eigen_values) {
+            Complex<N>[] eigen_values_sorted = eigen_values.OrderBy(item => item.Norm).ToArray();
+
+            return eigen_values_sorted;
+        }
+
+        private static (Complex<N>[] eigen_values, ComplexVector<N>[] eigen_vectors) SortEigenByNorm((Complex<N>[] eigen_values, ComplexVector<N>[] eigen_vectors) eigens) {
+            Debug.Assert(eigens.eigen_values.Length == eigens.eigen_vectors.Length);
+
+            IOrderedEnumerable<(Complex<N> val, ComplexVector<N> vec)> eigens_sorted = 
+                eigens.eigen_values.Zip(eigens.eigen_vectors).OrderBy(item => item.First.Norm);
+
+            Complex<N>[] eigen_values_sorted = eigens_sorted.Select(item => item.val).ToArray();
+            ComplexVector<N>[] eigen_vectors_sorted = eigens_sorted.Select(item => item.vec).ToArray();
+
+            return (eigen_values_sorted, eigen_vectors_sorted);
         }
     }
 }
