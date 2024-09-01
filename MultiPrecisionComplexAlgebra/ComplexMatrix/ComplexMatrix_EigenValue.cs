@@ -19,7 +19,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             precision_level = precision_level >= 0 ? precision_level : MultiPrecision<N>.Length * m.Size * 8;
 
-           int n = m.Size, notconverged = n;
+            int n = m.Size, notconverged = n;
             long exponent = m.MaxExponent;
             ComplexMatrix<N> u = ScaleB(m, -exponent);
 
@@ -232,7 +232,7 @@ namespace MultiPrecisionComplexAlgebra {
 
                     return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { vec0, vec1 });
                 }
-                else { 
+                else {
                     return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { (1, 0), (0, 1) });
                 }
             }
@@ -247,7 +247,7 @@ namespace MultiPrecisionComplexAlgebra {
         private static (Complex<N>[] eigen_values, ComplexVector<N>[] eigen_vectors) SortEigenByNorm((Complex<N>[] eigen_values, ComplexVector<N>[] eigen_vectors) eigens) {
             Debug.Assert(eigens.eigen_values.Length == eigens.eigen_vectors.Length);
 
-            IOrderedEnumerable<(Complex<N> val, ComplexVector<N> vec)> eigens_sorted = 
+            IOrderedEnumerable<(Complex<N> val, ComplexVector<N> vec)> eigens_sorted =
                 eigens.eigen_values.Zip(eigens.eigen_vectors).OrderByDescending(item => item.First.Norm);
 
             Complex<N>[] eigen_values_sorted = eigens_sorted.Select(item => item.val).ToArray();

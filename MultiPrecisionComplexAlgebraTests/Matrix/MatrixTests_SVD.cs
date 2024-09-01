@@ -1,5 +1,4 @@
 ﻿using MultiPrecision;
-using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
 
@@ -36,7 +35,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                 {{ ( 1, +2), ( 3, -1), ( 5, +0), ( 4, +2) },
                  { ( 4, +0), ( 6, +2), ( 8, -3), ( 3, +1) },
                  { ( 7, -1), ( 9, +1), (11, -2), (12, -3) },
-                 { (10, +0), (12, -1), (14, +2), ( 7, -4) }, 
+                 { (10, +0), (12, -1), (14, +2), ( 7, -4) },
                  { ( 6, -2), ( 4, -1), ( 7,  1), ( 0,  3) } }
             );
 

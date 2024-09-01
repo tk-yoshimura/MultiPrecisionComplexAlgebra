@@ -286,7 +286,7 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                     Console.WriteLine((m - qr).Norm);
 
-                    for (int row = 0; row < n; row++) { 
+                    for (int row = 0; row < n; row++) {
                         for (int col = 0; col < row; col++) {
                             Assert.IsTrue(Complex<Pow2.N4>.IsZero(r[row, col]));
                         }
@@ -303,7 +303,7 @@ namespace MultiPrecisionComplexAlgebraTests {
         public void QRDecompNasZeroTest() {
             ComplexMatrix<Pow2.N4> m = new Complex<Pow2.N4>[,]{
                  { "0",     "10+2i", "2-3i",  "3+3i",  "-5+4i"  },
-                 { "6-1i",  "9+6i",  "-3-7i", "-1",    "-9+10i" }, 
+                 { "6-1i",  "9+6i",  "-3-7i", "-1",    "-9+10i" },
                  { "9+7i",  "9-6i",  "-8+1i", "-8-3i", "10+7i"  },
                  { "-2-4i", "10-3i", "9-7i",  "-4-1i", "3-4i"   },
                  { "-4-7i", "-7i",   "2+6i",  "-6-7i", "-5+2i"  }

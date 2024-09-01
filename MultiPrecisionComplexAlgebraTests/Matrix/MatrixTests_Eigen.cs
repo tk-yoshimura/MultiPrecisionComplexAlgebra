@@ -1,9 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MultiPrecision;
-using MultiPrecisionAlgebra;
+﻿using MultiPrecision;
 using MultiPrecisionComplex;
 using MultiPrecisionComplexAlgebra;
-using System;
 
 namespace MultiPrecisionComplexAlgebraTests {
     public partial class ComplexMatrixTests {
@@ -47,8 +44,8 @@ namespace MultiPrecisionComplexAlgebraTests {
         [TestMethod()]
         public void EigenValuesN3Test() {
             ComplexMatrix<Pow2.N4> m = new(new Complex<Pow2.N4>[,]
-                {{ "-1-4i", "-2+1i", "-6-2i" }, 
-                 { "7+6i", "2+4i", "-6+6i" }, 
+                {{ "-1-4i", "-2+1i", "-6-2i" },
+                 { "7+6i", "2+4i", "-6+6i" },
                  { "6-2i", "4-1i", "7+1i" } }
             );
 

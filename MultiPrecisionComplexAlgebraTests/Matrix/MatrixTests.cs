@@ -87,12 +87,12 @@ namespace MultiPrecisionComplexAlgebraTests {
 
             Assert.AreNotEqual(m, m_h);
 
-            Assert.AreEqual((1, -2),  m_h[0, 0]);
-            Assert.AreEqual((3, 4),   m_h[0, 1]);
-            Assert.AreEqual((4, 7),   m_h[0, 2]);
+            Assert.AreEqual((1, -2), m_h[0, 0]);
+            Assert.AreEqual((3, 4), m_h[0, 1]);
+            Assert.AreEqual((4, 7), m_h[0, 2]);
             Assert.AreEqual((-1, -3), m_h[1, 0]);
-            Assert.AreEqual((5, 5),   m_h[1, 1]);
-            Assert.AreEqual((2, 3),   m_h[1, 2]);
+            Assert.AreEqual((5, 5), m_h[1, 1]);
+            Assert.AreEqual((2, 3), m_h[1, 2]);
         }
 
         [TestMethod]

@@ -277,7 +277,7 @@ namespace MultiPrecisionComplexAlgebra {
 
         public static ComplexMatrix<N> DiagonalAdd(ComplexMatrix<N> matrix, Complex<N> c) {
             int n = int.Min(matrix.Rows, matrix.Columns);
-            
+
             ComplexMatrix<N> ret = matrix.Copy();
 
             for (int i = 0; i < n; i++) {

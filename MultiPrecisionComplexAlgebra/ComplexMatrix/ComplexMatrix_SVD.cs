@@ -1,7 +1,5 @@
 ﻿using MultiPrecision;
 using MultiPrecisionComplex;
-using System.Diagnostics;
-using System.Linq;
 
 namespace MultiPrecisionComplexAlgebra {
     public partial class ComplexMatrix<N> where N : struct, IConstant {
@@ -15,7 +13,7 @@ namespace MultiPrecisionComplexAlgebra {
 
                 return (u, s, v);
             }
-            
+
             if (m.Rows > m.Columns) {
                 (ComplexVector<N> eigen_vals, ComplexVector<N>[] eigen_vecs) = EigenValueVectors(m * m.H);
 
@@ -28,7 +26,7 @@ namespace MultiPrecisionComplexAlgebra {
 
                 return (u, s, v);
             }
-            else { 
+            else {
                 (ComplexVector<N> eigen_vals, ComplexVector<N>[] eigen_vecs) = EigenValueVectors(m.H * m);
 
                 ComplexMatrix<N> v = HConcat(eigen_vecs);
