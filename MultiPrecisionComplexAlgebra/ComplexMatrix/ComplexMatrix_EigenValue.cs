@@ -17,7 +17,7 @@ namespace MultiPrecisionComplexAlgebra {
                 return SortEigenByNorm(EigenValues2x2(m));
             }
 
-            precision_level = precision_level >= 0 ? precision_level : MultiPrecision<N>.Length * m.Size * 8;
+            precision_level = precision_level >= 0 ? precision_level : 8 * MultiPrecision<N>.Length * m.Size;
 
             int n = m.Size, notconverged = n;
             long exponent = m.MaxExponent;
@@ -33,10 +33,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             for (int iter_qr = 0; iter_qr <= precision_level; iter_qr++) {
                 if (d.Size > 2) {
-                    Complex<N>[] mu2x2 = EigenValues2x2(d[^2.., ^2..]);
-                    Complex<N> d_kk = d[^1, ^1];
-                    Complex<N> mu = (d_kk - mu2x2[0]).Norm < (d_kk - mu2x2[1]).Norm
-                        ? mu2x2[0] : mu2x2[1];
+                    Complex<N> mu = EigenValues2x2(d[^2.., ^2..])[1];
 
                     (ComplexMatrix<N> q, ComplexMatrix<N> r) = QR(DiagonalAdd(d, -mu));
                     d = DiagonalAdd(r * q, mu);
@@ -96,12 +93,14 @@ namespace MultiPrecisionComplexAlgebra {
                 return SortEigenByNorm(EigenValueVectors2x2(m));
             }
 
-            precision_level = precision_level >= 0 ? precision_level : MultiPrecision<N>.Length * m.Size * 8;
+            precision_level = precision_level >= 0 ? precision_level : 8 * MultiPrecision<N>.Length * m.Size;
 
             int n = m.Size, notconverged = n;
             long exponent = m.MaxExponent;
             ComplexMatrix<N> u = ScaleB(m, -exponent);
-            MultiPrecision<N> eps = MultiPrecision<N>.Ldexp(1, -MultiPrecision<N>.Bits + 32);
+
+            ComplexVector<N> diagonal = u.Diagonals;
+            bool[] diagonal_sampled = new bool[n];
 
             ComplexVector<N> eigen_values = ComplexVector<N>.Fill(n, 1);
             ComplexVector<N> eigen_values_prev = eigen_values.Copy();
@@ -115,10 +114,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             for (int iter_qr = 0; iter_qr <= precision_level; iter_qr++) {
                 if (d.Size > 2) {
-                    Complex<N>[] mu2x2 = EigenValues2x2(d[^2.., ^2..]);
-                    Complex<N> d_kk = d[^1, ^1];
-                    Complex<N> mu = (d_kk - mu2x2[0]).Norm < (d_kk - mu2x2[1]).Norm
-                        ? mu2x2[0] : mu2x2[1];
+                    Complex<N> mu = EigenValues2x2(d[^2.., ^2..])[1];
 
                     (ComplexMatrix<N> q, ComplexMatrix<N> r) = QR(DiagonalAdd(d, -mu));
                     d = DiagonalAdd(r * q, mu);
@@ -142,22 +138,59 @@ namespace MultiPrecisionComplexAlgebra {
                     }
 
                     Complex<N> eigen_val = eigen_values[i];
-                    ComplexMatrix<N> g = DiagonalAdd(u, -eigen_val + eps).Inverse;
 
-                    MultiPrecision<N> norm, norm_prev = MultiPrecision<N>.NaN;
-                    ComplexVector<N> x = ComplexVector<N>.Fill(n, 0.125);
-                    x[i] = Complex<N>.One;
+                    int nearest_diagonal_index = eigen_val == diagonal[i] && !diagonal_sampled[i]
+                        ? i
+                        : diagonal
+                            .Where(v => !diagonal_sampled[v.index])
+                            .OrderBy(v => (v.val - eigen_val).Norm)
+                            .First().index;
 
-                    for (int iter_vector = 0; iter_vector < precision_level; iter_vector++) {
-                        x = (g * x).Normal;
+                    diagonal_sampled[nearest_diagonal_index] = true;
 
-                        norm = (u * x - eigen_val * x).Norm;
-
-                        if (norm.Exponent < -MultiPrecision<N>.Bits / 2 && norm >= norm_prev) {
-                            break;
+                    ComplexVector<N> v = u[.., nearest_diagonal_index], h = u[nearest_diagonal_index, ..];
+                    MultiPrecision<N> nondiagonal_absmax = MultiPrecision<N>.Zero;
+                    for (int k = 0; k < v.Dim; k++) {
+                        if (k == nearest_diagonal_index) {
+                            continue;
                         }
 
-                        norm_prev = norm;
+                        nondiagonal_absmax =
+                            MultiPrecision<N>.Max(MultiPrecision<N>.Max(
+                                nondiagonal_absmax, MultiPrecision<N>.Abs(v[k].R)), MultiPrecision<N>.Abs(h[k].R)
+                            );
+                        nondiagonal_absmax =
+                            MultiPrecision<N>.Max(MultiPrecision<N>.Max(
+                                nondiagonal_absmax, MultiPrecision<N>.Abs(v[k].I)), MultiPrecision<N>.Abs(h[k].I)
+                            );
+                    }
+
+                    MultiPrecision<N> eps = MultiPrecision<N>.Ldexp(nondiagonal_absmax, -MultiPrecision<N>.Bits + 32);
+
+                    ComplexMatrix<N> g = DiagonalAdd(u, -eigen_val + eps).Inverse;
+
+                    ComplexVector<N> x;
+
+                    if (IsFinite(g)) {
+                        MultiPrecision<N> norm, norm_prev = MultiPrecision<N>.NaN;
+                        x = ComplexVector<N>.Fill(n, 0.125);
+                        x[nearest_diagonal_index] = MultiPrecision<N>.One;
+
+                        for (int iter_vector = 0; iter_vector < precision_level; iter_vector++) {
+                            x = (g * x).Normal;
+
+                            norm = (u * x - eigen_val * x).Norm;
+
+                            if (norm.Exponent < -MultiPrecision<N>.Bits / 2 && norm >= norm_prev) {
+                                break;
+                            }
+
+                            norm_prev = norm;
+                        }
+                    }
+                    else {
+                        x = Vector<N>.Zero(n);
+                        x[nearest_diagonal_index] = 1d;
                     }
 
                     eigen_vectors[i] = x;
@@ -189,51 +222,64 @@ namespace MultiPrecisionComplexAlgebra {
         private static Complex<N>[] EigenValues2x2(ComplexMatrix<N> m) {
             Debug.Assert(m.Size == 2);
 
-            Complex<N> b = m[0, 0] + m[1, 1], c = m[0, 0] - m[1, 1];
+            Complex<N> m00 = m[0, 0], m11 = m[1, 1];
+            Complex<N> m01 = m[0, 1], m10 = m[1, 0];
 
-            Complex<N> d = Complex<N>.Sqrt(c * c + 4 * m[0, 1] * m[1, 0]);
+            Complex<N> b = m00 + m11, c = m00 - m11;
+
+            Complex<N> d = Complex<N>.Sqrt(c * c + 4 * m01 * m10);
 
             Complex<N> val0 = (b + d) / 2;
             Complex<N> val1 = (b - d) / 2;
 
-            return [val0, val1];
+            if ((val0 - m11).Norm >= (val1 - m11).Norm) {
+                return [val0, val1];
+            }
+            else {
+                return [val1, val0];
+            }
         }
 
         private static (Complex<N>[] eigen_values, ComplexVector<N>[] eigen_vectors) EigenValueVectors2x2(ComplexMatrix<N> m) {
             Debug.Assert(m.Size == 2);
 
+            Complex<N> m00 = m[0, 0], m11 = m[1, 1];
+            Complex<N> m01 = m[0, 1], m10 = m[1, 0];
+
             long diagonal_scale = long.Max(
-                long.Max(m[0, 0].R.Exponent, m[0, 0].I.Exponent),
-                long.Max(m[1, 1].R.Exponent, m[1, 1].I.Exponent)
+                long.Max(m00.R.Exponent, m00.I.Exponent),
+                long.Max(m11.R.Exponent, m11.I.Exponent)
             );
 
-            long m10_scale = long.Max(m[1, 0].R.Exponent, m[1, 0].I.Exponent);
+            long m10_scale = long.Max(m10.R.Exponent, m10.I.Exponent);
 
             if (diagonal_scale - m10_scale < MultiPrecision<N>.Bits) {
-                Complex<N> b = m[0, 0] + m[1, 1], c = m[0, 0] - m[1, 1];
+                Complex<N> b = m00 + m11, c = m00 - m11;
 
-                Complex<N> d = Complex<N>.Sqrt(c * c + 4 * m[0, 1] * m[1, 0]);
+                Complex<N> d = Complex<N>.Sqrt(c * c + 4 * m01 * m10);
 
                 Complex<N> val0 = (b + d) / 2;
                 Complex<N> val1 = (b - d) / 2;
 
-                ComplexVector<N> vec0 = new ComplexVector<N>((c + d) / (2 * m[1, 0]), 1).Normal;
-                ComplexVector<N> vec1 = new ComplexVector<N>((c - d) / (2 * m[1, 0]), 1).Normal;
+                ComplexVector<N> vec0 = new ComplexVector<N>((c + d) / (2 * m10), 1).Normal;
+                ComplexVector<N> vec1 = new ComplexVector<N>((c - d) / (2 * m10), 1).Normal;
 
-                return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { vec0, vec1 });
-            }
-            else {
-                Complex<N> val0 = m[0, 0];
-                Complex<N> val1 = m[1, 1];
-
-                if (val0 != val1) {
-                    ComplexVector<N> vec0 = (1, 0);
-                    ComplexVector<N> vec1 = new ComplexVector<N>(m[0, 1] / (val1 - val0), 1).Normal;
-
+                if ((val0 - m11).Norm >= (val1 - m11).Norm) {
                     return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { vec0, vec1 });
                 }
                 else {
-                    return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { (1, 0), (0, 1) });
+                    return (new Complex<N>[] { val1, val0 }, new ComplexVector<N>[] { vec1, vec0 });
+                }
+            }
+            else {
+                if (m00 != m11) {
+                    ComplexVector<N> vec0 = (1, 0);
+                    ComplexVector<N> vec1 = new ComplexVector<N>(m01 / (m11 - m00), 1).Normal;
+
+                    return (new Complex<N>[] { m00, m11 }, new ComplexVector<N>[] { vec0, vec1 });
+                }
+                else {
+                    return (new Complex<N>[] { m00, m11 }, new ComplexVector<N>[] { (1, 0), (0, 1) });
                 }
             }
         }
