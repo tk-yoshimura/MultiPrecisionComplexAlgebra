@@ -42,7 +42,7 @@ namespace MultiPrecisionComplexAlgebra {
             ) / (MultiPrecision<N>.Ldexp(det.R, exponent), MultiPrecision<N>.Ldexp(det.I, exponent));
         }
 
-        public static ComplexMatrix<N> GaussianEliminate(ComplexMatrix<N> m) {
+        private static ComplexMatrix<N> GaussianEliminate(ComplexMatrix<N> m) {
             if (!IsSquare(m)) {
                 throw new ArgumentException("not square matrix", nameof(m));
             }
