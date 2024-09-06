@@ -190,7 +190,7 @@ namespace MultiPrecisionComplexAlgebra {
                     }
                     else {
                         x = Vector<N>.Zero(n);
-                        x[nearest_diagonal_index] = 1d;
+                        x[nearest_diagonal_index] = MultiPrecision<N>.One;
                     }
 
                     eigen_vectors[i] = x;

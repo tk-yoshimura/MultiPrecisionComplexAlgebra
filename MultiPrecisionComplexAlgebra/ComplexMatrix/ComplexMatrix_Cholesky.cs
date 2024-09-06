@@ -48,5 +48,106 @@ namespace MultiPrecisionComplexAlgebra {
 
             return l;
         }
+
+        public static ComplexMatrix<N> InversePositiveSymmetric(ComplexMatrix<N> m, bool enable_check_hermitian = true) {
+            if (!IsSquare(m)) {
+                throw new ArgumentException("not square matrix", nameof(m));
+            }
+
+            int n = m.Size;
+
+            if (!IsFinite(m)) {
+                return Invalid(n, n);
+            }
+
+            ComplexMatrix<N> l = Cholesky(m, enable_check_hermitian);
+
+            if (!IsFinite(l)) {
+                return Invalid(n);
+            }
+
+            ComplexMatrix<N> v = Identity(n);
+
+            for (int i = 0; i < n; i++) {
+                Complex<N> inv_mii = MultiPrecision<N>.One / l.e[i, i];
+                for (int j = 0; j < n; j++) {
+                    v.e[i, j] *= inv_mii;
+                }
+
+                for (int j = i + 1; j < n; j++) {
+                    Complex<N> mul = l.e[j, i];
+                    for (int k = 0; k < n; k++) {
+                        v.e[j, k] -= v.e[i, k] * mul;
+                    }
+                }
+            }
+
+            Complex<N>[,] ret = new Complex<N>[n, n];
+            v = v.T;
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j <= i; j++) {
+                    Complex<N> s = 0d;
+
+                    for (int k = i; k < n; k++) {
+                        s += Complex<N>.Conjugate(v.e[i, k]) * v.e[j, k];
+                    }
+
+                    if (i != j) {
+                        ret[i, j] = s;
+                        ret[j, i] = Complex<N>.Conjugate(s);
+                    }
+                    else {
+                        ret[i, i] = s.R;
+                    }
+                }
+            }
+
+            ComplexMatrix<N> w = new(ret, cloning: false);
+
+            return w;
+        }
+
+        public static ComplexVector<N> SolvePositiveSymmetric(ComplexMatrix<N> m, ComplexVector<N> v, bool enable_check_hermitian = true) {
+            if (!IsSquare(m) || m.Size != v.Dim) {
+                throw new ArgumentException("invalid size", $"{nameof(m)}, {nameof(v)}");
+            }
+
+            int n = m.Size;
+
+            if (!IsFinite(m)) {
+                return ComplexVector<N>.Invalid(n);
+            }
+
+            ComplexMatrix<N> l = Cholesky(m, enable_check_hermitian);
+
+            if (!IsFinite(l)) {
+                return ComplexVector<N>.Invalid(n);
+            }
+
+            v = v.Copy();
+
+            for (int i = 0; i < n; i++) {
+                Complex<N> inv_mii = MultiPrecision<N>.One / l.e[i, i];
+                v[i] *= inv_mii;
+
+                for (int j = i + 1; j < n; j++) {
+                    Complex<N> mul = l.e[j, i];
+                    v[j] -= v[i] * mul;
+                }
+            }
+
+            for (int i = n - 1; i >= 0; i--) {
+                Complex<N> inv_mii = MultiPrecision<N>.One / Complex<N>.Conjugate(l.e[i, i]);
+                v[i] *= inv_mii;
+
+                for (int j = i - 1; j >= 0; j--) {
+                    Complex<N> mul = Complex<N>.Conjugate(l.e[i, j]);
+                    v[j] -= v[i] * mul;
+                }
+            }
+
+            return v;
+        }
     }
 }

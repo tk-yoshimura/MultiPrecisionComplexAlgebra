@@ -1,3 +1,4 @@
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using MultiPrecision;
 using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
@@ -208,6 +209,25 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                     Assert.IsTrue((k.Det.Norm - 1) < 1e-30);
                     Assert.IsTrue((k - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm < 1e-30);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void InvertNxMTest() {
+            for (int n = 1; n <= 16; n++) {
+                for (int m = 1; m <= 16; m++) {
+                    for (int i = 0; i < 4; i++) {
+                        ComplexMatrix<Pow2.N4> matrix = TestCase<Pow2.N4>.RandomMatrix(n, m);
+
+                        ComplexMatrix<Pow2.N4> r = matrix.Inverse;
+
+                        ComplexMatrix<Pow2.N4> k = matrix * r * matrix;
+
+                        Console.WriteLine(k);
+
+                        Assert.IsTrue((k - matrix).Norm < 1e-27);
+                    }
                 }
             }
         }

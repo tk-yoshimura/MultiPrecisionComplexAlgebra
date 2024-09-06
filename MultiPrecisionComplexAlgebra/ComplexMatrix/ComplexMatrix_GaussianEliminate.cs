@@ -76,7 +76,7 @@ namespace MultiPrecisionComplexAlgebra {
                         (u.e[p, j], u.e[i, j]) = (u.e[i, j], u.e[p, j]);
                     }
 
-                    for (int j = 0; j < v.Columns; j++) {
+                    for (int j = 0; j < n; j++) {
                         (v.e[p, j], v.e[i, j]) = (v.e[i, j], v.e[p, j]);
                     }
                 }
@@ -86,7 +86,7 @@ namespace MultiPrecisionComplexAlgebra {
                 for (int j = i + 1; j < n; j++) {
                     u.e[i, j] *= inv_mii;
                 }
-                for (int j = 0; j < v.Columns; j++) {
+                for (int j = 0; j < n; j++) {
                     v.e[i, j] *= inv_mii;
                 }
 
@@ -96,7 +96,7 @@ namespace MultiPrecisionComplexAlgebra {
                     for (int k = i + 1; k < n; k++) {
                         u.e[j, k] -= u.e[i, k] * mul;
                     }
-                    for (int k = 0; k < v.Columns; k++) {
+                    for (int k = 0; k < n; k++) {
                         v.e[j, k] -= v.e[i, k] * mul;
                     }
                 }
@@ -108,7 +108,7 @@ namespace MultiPrecisionComplexAlgebra {
                     for (int k = i; k < n; k++) {
                         u.e[j, k] = Complex<N>.Zero;
                     }
-                    for (int k = 0; k < v.Columns; k++) {
+                    for (int k = 0; k < n; k++) {
                         v.e[j, k] -= v.e[i, k] * mul;
                     }
                 }
