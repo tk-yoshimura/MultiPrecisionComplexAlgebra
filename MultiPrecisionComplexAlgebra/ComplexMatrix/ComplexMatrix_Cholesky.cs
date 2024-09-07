@@ -28,14 +28,14 @@ namespace MultiPrecisionComplexAlgebra {
                 for (int j = 0; j < i; j++) {
                     Complex<N> v_ij = u[i, j];
                     for (int k = 0; k < j; k++) {
-                        v_ij -= v[i, k] * Complex<N>.Conjugate(v[j, k]);
+                        v_ij -= v[i, k] * v[j, k].Conj;
                     }
                     v[i, j] = v_ij / v[j, j]; 
                 }
 
                 Complex<N> v_ii = u[i, i];
                 for (int k = 0; k < i; k++) {
-                    v_ii -= v[i, k] * Complex<N>.Conjugate(v[i, k]);
+                    v_ii -= v[i, k] * v[i, k].Conj;
                 }
                 v[i, i] = Complex<N>.Sqrt(v_ii);
 
@@ -49,7 +49,7 @@ namespace MultiPrecisionComplexAlgebra {
             return l;
         }
 
-        public static ComplexMatrix<N> InversePositiveSymmetric(ComplexMatrix<N> m, bool enable_check_hermitian = true) {
+        public static ComplexMatrix<N> InversePositiveHermitian(ComplexMatrix<N> m, bool enable_check_hermitian = true) {
             if (!IsSquare(m)) {
                 throw new ArgumentException("not square matrix", nameof(m));
             }
@@ -90,12 +90,12 @@ namespace MultiPrecisionComplexAlgebra {
                     Complex<N> s = 0d;
 
                     for (int k = i; k < n; k++) {
-                        s += Complex<N>.Conjugate(v.e[i, k]) * v.e[j, k];
+                        s += v.e[i, k].Conj * v.e[j, k];
                     }
 
                     if (i != j) {
                         ret[i, j] = s;
-                        ret[j, i] = Complex<N>.Conjugate(s);
+                        ret[j, i] = s.Conj;
                     }
                     else {
                         ret[i, i] = s.R;
@@ -108,7 +108,7 @@ namespace MultiPrecisionComplexAlgebra {
             return w;
         }
 
-        public static ComplexVector<N> SolvePositiveSymmetric(ComplexMatrix<N> m, ComplexVector<N> v, bool enable_check_hermitian = true) {
+        public static ComplexVector<N> SolvePositiveHermitian(ComplexMatrix<N> m, ComplexVector<N> v, bool enable_check_hermitian = true) {
             if (!IsSquare(m) || m.Size != v.Dim) {
                 throw new ArgumentException("invalid size", $"{nameof(m)}, {nameof(v)}");
             }
@@ -138,11 +138,11 @@ namespace MultiPrecisionComplexAlgebra {
             }
 
             for (int i = n - 1; i >= 0; i--) {
-                Complex<N> inv_mii = MultiPrecision<N>.One / Complex<N>.Conjugate(l.e[i, i]);
+                Complex<N> inv_mii = MultiPrecision<N>.One / l.e[i, i].Conj;
                 v[i] *= inv_mii;
 
                 for (int j = i - 1; j >= 0; j--) {
-                    Complex<N> mul = Complex<N>.Conjugate(l.e[i, j]);
+                    Complex<N> mul = l.e[i, j].Conj;
                     v[j] -= v[i] * mul;
                 }
             }

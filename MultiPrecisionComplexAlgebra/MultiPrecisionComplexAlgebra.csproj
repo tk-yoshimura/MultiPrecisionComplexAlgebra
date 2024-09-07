@@ -18,8 +18,8 @@
 
   <ItemGroup>
     <PackageReference Include="TYoshimura.MultiPrecision" Version="6.3.4" />
-    <PackageReference Include="TYoshimura.MultiPrecision.Algebra" Version="2.2.0" />
-    <PackageReference Include="TYoshimura.MultiPrecision.Complex" Version="1.1.7" />
+    <PackageReference Include="TYoshimura.MultiPrecision.Algebra" Version="2.2.2" />
+    <PackageReference Include="TYoshimura.MultiPrecision.Complex" Version="1.1.8" />
   </ItemGroup>
 
 </Project>

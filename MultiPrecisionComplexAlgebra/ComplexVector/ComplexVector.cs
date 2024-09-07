@@ -130,7 +130,7 @@ namespace MultiPrecisionComplexAlgebra {
             Complex<N>[] ret = new Complex<N>[v.Dim], e = v.v;
 
             for (int i = 0; i < ret.Length; i++) {
-                ret[i] = Complex<N>.Conjugate(e[i]);
+                ret[i] = e[i].Conj;
             }
 
             return new ComplexVector<N>(ret, cloning: false);

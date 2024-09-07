@@ -128,7 +128,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             for (int i = 0; i < ret.GetLength(0); i++) {
                 for (int j = 0; j < ret.GetLength(1); j++) {
-                    ret[i, j] = Complex<N>.Conjugate(e[i, j]);
+                    ret[i, j] = e[i, j].Conj;
                 }
             }
 
@@ -158,7 +158,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             for (int i = 0; i < m.Rows; i++) {
                 for (int j = 0; j < m.Columns; j++) {
-                    ret.e[j, i] = Complex<N>.Conjugate(m.e[i, j]);
+                    ret.e[j, i] = m.e[i, j].Conj;
                 }
             }
 
@@ -187,11 +187,11 @@ namespace MultiPrecisionComplexAlgebra {
             }
             else if (m.Rows < m.Columns) {
                 ComplexMatrix<N> mh = m.H, mr = m * mh;
-                return mh * InversePositiveSymmetric(mr, enable_check_hermitian: false);
+                return mh * InversePositiveHermitian(mr, enable_check_hermitian: false);
             }
             else {
                 ComplexMatrix<N> mh = m.H, mr = mh * m;
-                return InversePositiveSymmetric(mr, enable_check_hermitian: false) * mh;
+                return InversePositiveHermitian(mr, enable_check_hermitian: false) * mh;
             }
         }
 
@@ -456,7 +456,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             for (int i = 0; i < matrix.Rows; i++) {
                 for (int j = i; j < matrix.Columns; j++) {
-                    if (matrix.e[i, j] != Complex<N>.Conjugate(matrix.e[j, i])) {
+                    if (matrix.e[i, j] != matrix.e[j, i].Conj) {
                         return false;
                     }
                 }
