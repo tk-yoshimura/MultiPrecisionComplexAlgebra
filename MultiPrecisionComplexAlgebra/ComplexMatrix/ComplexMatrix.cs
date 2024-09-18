@@ -240,12 +240,7 @@ namespace MultiPrecisionComplexAlgebra {
 
                 for (int i = 0; i < Rows; i++) {
                     for (int j = 0; j < Columns; j++) {
-                        if (MultiPrecision<N>.IsFinite(e[i, j].R)) {
-                            max_exponent = Math.Max(e[i, j].R.Exponent, max_exponent);
-                        }
-                        if (MultiPrecision<N>.IsFinite(e[i, j].I)) {
-                            max_exponent = Math.Max(e[i, j].I.Exponent, max_exponent);
-                        }
+                        max_exponent = Math.Max(e[i, j].Exponent, max_exponent);
                     }
                 }
 
@@ -258,7 +253,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             for (int i = 0; i < ret.Rows; i++) {
                 for (int j = 0; j < ret.Columns; j++) {
-                    ret.e[i, j] = (MultiPrecision<N>.Ldexp(ret.e[i, j].R, n), MultiPrecision<N>.Ldexp(ret.e[i, j].I, n));
+                    ret.e[i, j] = Complex<N>.Ldexp(ret.e[i, j], n);
                 }
             }
 

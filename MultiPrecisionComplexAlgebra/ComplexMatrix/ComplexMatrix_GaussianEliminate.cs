@@ -17,7 +17,7 @@ namespace MultiPrecisionComplexAlgebra {
                     { m.e[1, 1], -m.e[0, 1] },
                     { -m.e[1, 0], m.e[0, 0] }
                 }, cloning: false
-            ) / (MultiPrecision<N>.Ldexp(det.R, exponent), MultiPrecision<N>.Ldexp(det.I, exponent));
+            ) / Complex<N>.Ldexp(det, exponent);
         }
 
         private static ComplexMatrix<N> Invert3x3(ComplexMatrix<N> m) {
@@ -39,7 +39,7 @@ namespace MultiPrecisionComplexAlgebra {
                       m.e[0, 1] * m.e[2, 0] - m.e[0, 0] * m.e[2, 1],
                       m.e[0, 0] * m.e[1, 1] - m.e[0, 1] * m.e[1, 0] }
                 }, cloning: false
-            ) / (MultiPrecision<N>.Ldexp(det.R, exponent), MultiPrecision<N>.Ldexp(det.I, exponent));
+            ) / Complex<N>.Ldexp(det, exponent);
         }
 
         private static ComplexMatrix<N> GaussianEliminate(ComplexMatrix<N> m) {

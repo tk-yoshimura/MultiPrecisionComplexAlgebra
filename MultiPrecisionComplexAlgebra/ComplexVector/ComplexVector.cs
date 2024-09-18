@@ -214,12 +214,7 @@ namespace MultiPrecisionComplexAlgebra {
                 long max_exponent = long.MinValue;
 
                 for (int i = 0; i < Dim; i++) {
-                    if (MultiPrecision<N>.IsFinite(v[i].R)) {
-                        max_exponent = Math.Max(v[i].R.Exponent, max_exponent);
-                    }
-                    if (MultiPrecision<N>.IsFinite(v[i].I)) {
-                        max_exponent = Math.Max(v[i].I.Exponent, max_exponent);
-                    }
+                    max_exponent = Math.Max(v[i].Exponent, max_exponent);
                 }
 
                 return max_exponent;
@@ -230,7 +225,7 @@ namespace MultiPrecisionComplexAlgebra {
             ComplexVector<N> ret = vector.Copy();
 
             for (int i = 0; i < ret.Dim; i++) {
-                ret.v[i] = (MultiPrecision<N>.Ldexp(ret.v[i].R, n), MultiPrecision<N>.Ldexp(ret.v[i].I, n));
+                ret.v[i] = Complex<N>.Ldexp(ret.v[i], n);
             }
 
             return ret;

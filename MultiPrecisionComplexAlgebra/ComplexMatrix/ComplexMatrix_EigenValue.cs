@@ -67,7 +67,7 @@ namespace MultiPrecisionComplexAlgebra {
                     ComplexVector<N> lower = d[^1, ..^1];
                     Complex<N> eigen = d[^1, ^1];
 
-                    if (lower.MaxExponent < long.Max(eigen.R.Exponent, eigen.I.Exponent) - MultiPrecision<N>.Bits) {
+                    if (lower.MaxExponent < eigen.Exponent - MultiPrecision<N>.Bits) {
                         d = d[..^1, ..^1];
                     }
                 }
@@ -205,7 +205,7 @@ namespace MultiPrecisionComplexAlgebra {
                     ComplexVector<N> lower = d[^1, ..^1];
                     Complex<N> eigen = d[^1, ^1];
 
-                    if (lower.MaxExponent < long.Max(eigen.R.Exponent, eigen.I.Exponent) - MultiPrecision<N>.Bits) {
+                    if (lower.MaxExponent < eigen.Exponent - MultiPrecision<N>.Bits) {
                         d = d[..^1, ..^1];
                     }
                 }
@@ -246,12 +246,9 @@ namespace MultiPrecisionComplexAlgebra {
             Complex<N> m00 = m[0, 0], m11 = m[1, 1];
             Complex<N> m01 = m[0, 1], m10 = m[1, 0];
 
-            long diagonal_scale = long.Max(
-                long.Max(m00.R.Exponent, m00.I.Exponent),
-                long.Max(m11.R.Exponent, m11.I.Exponent)
-            );
+            long diagonal_scale = long.Max(m00.Exponent, m11.Exponent);
 
-            long m10_scale = long.Max(m10.R.Exponent, m10.I.Exponent);
+            long m10_scale = m10.Exponent;
 
             if (diagonal_scale - m10_scale < MultiPrecision<N>.Bits) {
                 Complex<N> b = m00 + m11, c = m00 - m11;
