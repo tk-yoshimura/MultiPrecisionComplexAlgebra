@@ -1,6 +1,7 @@
 ﻿using MultiPrecision;
 using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
+using System;
 using System.Diagnostics;
 
 namespace MultiPrecisionComplexAlgebra {
@@ -21,7 +22,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             int n = m.Size, notconverged = n;
             long exponent = m.MaxExponent;
-            ComplexMatrix<N> u = ScaleB(m, -exponent);
+            (ComplexMatrix<N> u, _, _) = PermutateDiagonal(ScaleB(m, -exponent));
 
             ComplexVector<N> eigen_values = ComplexVector<N>.Fill(n, 1);
             ComplexVector<N> eigen_values_prev = eigen_values.Copy();
@@ -41,7 +42,7 @@ namespace MultiPrecisionComplexAlgebra {
                     eigen_values[..d.Size] = d.Diagonals[..d.Size];
                 }
                 else {
-                    eigen_values[..2] = EigenValues(d);
+                    eigen_values[..2] = EigenValues2x2(d);
                 }
 
                 for (int i = notconverged - 1; i >= 0; i--) {
@@ -97,10 +98,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             int n = m.Size, notconverged = n;
             long exponent = m.MaxExponent;
-            ComplexMatrix<N> u = ScaleB(m, -exponent);
-
-            ComplexVector<N> diagonal = u.Diagonals;
-            bool[] diagonal_sampled = new bool[n];
+            (ComplexMatrix<N> u, _, int[] perm_indexes) = PermutateDiagonal(ScaleB(m, -exponent));
 
             ComplexVector<N> eigen_values = ComplexVector<N>.Fill(n, 1);
             ComplexVector<N> eigen_values_prev = eigen_values.Copy();
@@ -122,7 +120,7 @@ namespace MultiPrecisionComplexAlgebra {
                     eigen_values[..d.Size] = d.Diagonals[..d.Size];
                 }
                 else {
-                    eigen_values[..2] = EigenValues(d);
+                    eigen_values[..2] = EigenValues2x2(d);
                 }
 
                 for (int i = notconverged - 1; i >= 0; i--) {
@@ -139,19 +137,10 @@ namespace MultiPrecisionComplexAlgebra {
 
                     Complex<N> eigen_val = eigen_values[i];
 
-                    int nearest_diagonal_index = eigen_val == diagonal[i] && !diagonal_sampled[i]
-                        ? i
-                        : diagonal
-                            .Where(v => !diagonal_sampled[v.index])
-                            .OrderBy(v => (v.val - eigen_val).Norm)
-                            .First().index;
-
-                    diagonal_sampled[nearest_diagonal_index] = true;
-
-                    ComplexVector<N> v = u[.., nearest_diagonal_index], h = u[nearest_diagonal_index, ..];
+                    ComplexVector<N> v = u[.., i], h = u[i, ..];
                     MultiPrecision<N> nondiagonal_absmax = MultiPrecision<N>.Zero;
                     for (int k = 0; k < v.Dim; k++) {
-                        if (k == nearest_diagonal_index) {
+                        if (k == i) {
                             continue;
                         }
 
@@ -174,7 +163,7 @@ namespace MultiPrecisionComplexAlgebra {
                     if (IsFinite(g)) {
                         MultiPrecision<N> norm, norm_prev = MultiPrecision<N>.NaN;
                         x = ComplexVector<N>.Fill(n, 0.125);
-                        x[nearest_diagonal_index] = MultiPrecision<N>.One;
+                        x[i] = MultiPrecision<N>.One;
 
                         for (int iter_vector = 0; iter_vector < precision_level; iter_vector++) {
                             x = (g * x).Normal;
@@ -190,10 +179,10 @@ namespace MultiPrecisionComplexAlgebra {
                     }
                     else {
                         x = Vector<N>.Zero(n);
-                        x[nearest_diagonal_index] = MultiPrecision<N>.One;
+                        x[i] = MultiPrecision<N>.One;
                     }
 
-                    eigen_vectors[i] = x;
+                    eigen_vectors[i] = x[perm_indexes];
                     notconverged--;
                 }
 
@@ -297,6 +286,39 @@ namespace MultiPrecisionComplexAlgebra {
             ComplexVector<N>[] eigen_vectors_sorted = eigens_sorted.Select(item => item.vec).ToArray();
 
             return (eigen_values_sorted, eigen_vectors_sorted);
+        }
+
+        private static (ComplexMatrix<N> matrix, int[] indexes, int[] indexes_invert) PermutateDiagonal(ComplexMatrix<N> m) {
+            Debug.Assert(IsSquare(m));
+
+            int n = m.Size;
+
+            Vector<N> rates = Vector<N>.Zero(n);
+
+            MultiPrecision<N> eps = MultiPrecision<N>.Ldexp(1, -MultiPrecision<N>.Bits * 16);
+
+            for (int i = 0; i < n; i++) {
+                Complex<N> diagonal = m[i, i];
+
+                ComplexVector<N> nondigonal = ComplexVector<N>.Concat(m[i, ..i], m[i, (i + 1)..]);
+
+                MultiPrecision<N> nondigonal_norm = nondigonal.Norm;
+                MultiPrecision<N> rate = diagonal.Norm / (nondigonal_norm + eps);
+
+                rates[i] = rate;
+            }
+
+            int[] indexes = rates.Select(item => (item.index, item.val)).OrderBy(item => item.val).Select(item => item.index).ToArray();
+
+            ComplexMatrix<N> m_perm = m[indexes, ..][.., indexes];
+
+            int[] indexes_invert = new int[n];
+
+            for (int i = 0; i < n; i++) {
+                indexes_invert[indexes[i]] = i;
+            }
+
+            return (m_perm, indexes, indexes_invert);
         }
     }
 }
