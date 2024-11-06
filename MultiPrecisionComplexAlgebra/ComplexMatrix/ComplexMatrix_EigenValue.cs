@@ -309,7 +309,7 @@ namespace MultiPrecisionComplexAlgebra {
 
             int[] indexes = rates.Select(item => (item.index, item.val)).OrderBy(item => item.val).Select(item => item.index).ToArray();
 
-            ComplexMatrix<N> m_perm = m[indexes, ..][.., indexes];
+            ComplexMatrix<N> m_perm = m[indexes, indexes];
 
             int[] indexes_invert = new int[n];
 
