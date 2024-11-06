@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using MultiPrecision;
+﻿using MultiPrecision;
 using MultiPrecisionComplexAlgebra;
 
 namespace MultiPrecisionComplexAlgebraTests {

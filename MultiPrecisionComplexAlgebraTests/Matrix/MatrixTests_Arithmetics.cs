@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using MultiPrecision;
 using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;

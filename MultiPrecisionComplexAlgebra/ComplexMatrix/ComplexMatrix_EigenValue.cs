@@ -1,7 +1,6 @@
 ﻿using MultiPrecision;
 using MultiPrecisionAlgebra;
 using MultiPrecisionComplex;
-using System;
 using System.Diagnostics;
 
 namespace MultiPrecisionComplexAlgebra {

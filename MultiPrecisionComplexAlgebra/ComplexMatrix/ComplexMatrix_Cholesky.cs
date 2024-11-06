@@ -1,5 +1,5 @@
-﻿using MultiPrecisionComplex;
-using MultiPrecision;
+﻿using MultiPrecision;
+using MultiPrecisionComplex;
 
 namespace MultiPrecisionComplexAlgebra {
     public partial class ComplexMatrix<N> where N : struct, IConstant {
@@ -9,7 +9,7 @@ namespace MultiPrecisionComplexAlgebra {
             }
 
             int n = m.Size;
-            
+
             if ((enable_check_hermitian && !IsHermitian(m)) || !IsFinite(m)) {
                 return Invalid(n);
             }
@@ -30,7 +30,7 @@ namespace MultiPrecisionComplexAlgebra {
                     for (int k = 0; k < j; k++) {
                         v_ij -= v[i, k] * v[j, k].Conj;
                     }
-                    v[i, j] = v_ij / v[j, j]; 
+                    v[i, j] = v_ij / v[j, j];
                 }
 
                 Complex<N> v_ii = u[i, i];
