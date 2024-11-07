@@ -86,6 +86,9 @@ namespace MultiPrecisionComplexAlgebra {
                 throw new ArgumentException("not square matrix", nameof(m));
             }
 
+            if (IsZero(m)) {
+                return (ComplexVector<N>.Zero(m.Size), Identity(m.Size).Horizontals);
+            }
             if (m.Size <= 1) {
                 return ([m[0, 0]], [new ComplexVector<N>(1)]);
             }
@@ -235,19 +238,25 @@ namespace MultiPrecisionComplexAlgebra {
             Complex<N> m01 = m[0, 1], m10 = m[1, 0];
 
             long diagonal_scale = long.Max(m00.Exponent, m11.Exponent);
+            long nondiagonal_scale = long.Max(m01.Exponent, m10.Exponent);
 
-            long m10_scale = m10.Exponent;
-
-            if (diagonal_scale - m10_scale < MultiPrecision<N>.Bits) {
+            if (diagonal_scale - nondiagonal_scale < MultiPrecision<N>.Bits) {
                 Complex<N> b = m00 + m11, c = m00 - m11;
 
-                Complex<N> d = Complex<N>.Sqrt(c * c + 4 * m01 * m10);
+                Complex<N> d = Complex<N>.Sqrt(c * c + 4d * m01 * m10);
 
-                Complex<N> val0 = (b + d) / 2;
-                Complex<N> val1 = (b - d) / 2;
+                Complex<N> val0 = (b + d) * 0.5d;
+                Complex<N> val1 = (b - d) * 0.5d;
 
-                ComplexVector<N> vec0 = new ComplexVector<N>((c + d) / (2 * m10), 1).Normal;
-                ComplexVector<N> vec1 = new ComplexVector<N>((c - d) / (2 * m10), 1).Normal;
+                ComplexVector<N> vec0, vec1;
+                if (m10.Magnitude > m01.Magnitude) {
+                    vec0 = new ComplexVector<N>((c + d) / (2d * m10), 1d).Normal;
+                    vec1 = new ComplexVector<N>((c - d) / (2d * m10), 1d).Normal;
+                }
+                else {
+                    vec0 = new ComplexVector<N>(1d, (-c + d) / (2d * m01)).Normal;
+                    vec1 = new ComplexVector<N>(1d, (-c - d) / (2d * m01)).Normal;
+                }
 
                 if ((val0 - m11).Norm >= (val1 - m11).Norm) {
                     return (new Complex<N>[] { val0, val1 }, new ComplexVector<N>[] { vec0, vec1 });

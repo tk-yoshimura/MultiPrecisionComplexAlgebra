@@ -131,5 +131,62 @@ namespace MultiPrecisionComplexAlgebraTests {
                 }
             }
         }
+
+        [TestMethod()]
+        public void EigenVectorTest() {
+            foreach (ComplexMatrix<Pow2.N4> matrix in MatrixTestCases<Pow2.N4>.N2Matrixs) {
+                Console.WriteLine($"test: {matrix}");
+
+                ComplexMatrix<Pow2.N4> matrix_scaled = ComplexMatrix<Pow2.N4>.ScaleB(matrix, -matrix.MaxExponent);
+
+                (Complex<Pow2.N4>[] eigen_values, ComplexVector<Pow2.N4>[] eigen_vectors) = ComplexMatrix<Pow2.N4>.EigenValueVectors(matrix_scaled);
+                ComplexVector<Pow2.N4> eigen_values_expected = ComplexMatrix<Pow2.N4>.EigenValues(matrix_scaled);
+
+                Assert.IsTrue((eigen_values - eigen_values_expected).Norm < 1e-25);
+
+                for (int i = 0; i < matrix_scaled.Size; i++) {
+                    Complex<Pow2.N4> eigen_value = eigen_values[i];
+                    ComplexVector<Pow2.N4> eigen_vector = eigen_vectors[i];
+
+                    Assert.IsTrue((matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm < 1e-32);
+                }
+            }
+
+            foreach (ComplexMatrix<Pow2.N4> matrix in MatrixTestCases<Pow2.N4>.PositiveMatrixs) {
+                Console.WriteLine($"test: {matrix}");
+
+                ComplexMatrix<Pow2.N4> matrix_scaled = ComplexMatrix<Pow2.N4>.ScaleB(matrix, -matrix.MaxExponent);
+
+                (Complex<Pow2.N4>[] eigen_values, ComplexVector<Pow2.N4>[] eigen_vectors) = ComplexMatrix<Pow2.N4>.EigenValueVectors(matrix_scaled);
+                ComplexVector<Pow2.N4> eigen_values_expected = ComplexMatrix<Pow2.N4>.EigenValues(matrix_scaled);
+
+                Assert.IsTrue((eigen_values - eigen_values_expected).Norm < 1e-25);
+
+                for (int i = 0; i < matrix_scaled.Size; i++) {
+                    Complex<Pow2.N4> eigen_value = eigen_values[i];
+                    ComplexVector<Pow2.N4> eigen_vector = eigen_vectors[i];
+
+                    Assert.IsTrue((matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm < 1e-32);
+                }
+            }
+
+            foreach (ComplexMatrix<Pow2.N4> matrix in MatrixTestCases<Pow2.N4>.SingularMatrixs[..32]) {
+                Console.WriteLine($"test: {matrix}");
+
+                ComplexMatrix<Pow2.N4> matrix_scaled = ComplexMatrix<Pow2.N4>.ScaleB(matrix, -matrix.MaxExponent);
+
+                (Complex<Pow2.N4>[] eigen_values, ComplexVector<Pow2.N4>[] eigen_vectors) = ComplexMatrix<Pow2.N4>.EigenValueVectors(matrix_scaled);
+                ComplexVector<Pow2.N4> eigen_values_expected = ComplexMatrix<Pow2.N4>.EigenValues(matrix_scaled);
+
+                Assert.IsTrue((eigen_values - eigen_values_expected).Norm < 1e-25);
+
+                for (int i = 0; i < matrix_scaled.Size; i++) {
+                    Complex<Pow2.N4> eigen_value = eigen_values[i];
+                    ComplexVector<Pow2.N4> eigen_vector = eigen_vectors[i];
+
+                    Assert.IsTrue((matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm < 1e-32);
+                }
+            }
+        }
     }
 }
