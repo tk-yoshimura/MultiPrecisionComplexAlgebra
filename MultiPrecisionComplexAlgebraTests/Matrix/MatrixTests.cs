@@ -107,8 +107,6 @@ namespace MultiPrecisionComplexAlgebraTests {
 
             m[2, 2] = (4, 1);
 
-            ComplexMatrix<Pow2.N4> mh = m.H;
-
             Assert.IsFalse(ComplexMatrix<Pow2.N4>.IsHermitian(m));
         }
 

@@ -243,19 +243,19 @@ namespace MultiPrecisionComplexAlgebra {
             if (diagonal_scale - nondiagonal_scale < MultiPrecision<N>.Bits) {
                 Complex<N> b = m00 + m11, c = m00 - m11;
 
-                Complex<N> d = Complex<N>.Sqrt(c * c + 4d * m01 * m10);
+                Complex<N> d = Complex<N>.Sqrt(c * c + 4 * m01 * m10);
 
-                Complex<N> val0 = (b + d) * 0.5d;
-                Complex<N> val1 = (b - d) * 0.5d;
+                Complex<N> val0 = (b + d) / 2;
+                Complex<N> val1 = (b - d) / 2;
 
                 ComplexVector<N> vec0, vec1;
                 if (m10.Magnitude > m01.Magnitude) {
-                    vec0 = new ComplexVector<N>((c + d) / (2d * m10), 1d).Normal;
-                    vec1 = new ComplexVector<N>((c - d) / (2d * m10), 1d).Normal;
+                    vec0 = new ComplexVector<N>((c + d) / (2 * m10), 1).Normal;
+                    vec1 = new ComplexVector<N>((c - d) / (2 * m10), 1).Normal;
                 }
                 else {
-                    vec0 = new ComplexVector<N>(1d, (-c + d) / (2d * m01)).Normal;
-                    vec1 = new ComplexVector<N>(1d, (-c - d) / (2d * m01)).Normal;
+                    vec0 = new ComplexVector<N>(1, (-c + d) / (2 * m01)).Normal;
+                    vec1 = new ComplexVector<N>(1, (-c - d) / (2 * m01)).Normal;
                 }
 
                 if ((val0 - m11).Norm >= (val1 - m11).Norm) {
