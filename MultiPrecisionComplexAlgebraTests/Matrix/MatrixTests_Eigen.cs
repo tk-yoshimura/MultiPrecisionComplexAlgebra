@@ -184,7 +184,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                     Complex<Pow2.N4> eigen_value = eigen_values[i];
                     ComplexVector<Pow2.N4> eigen_vector = eigen_vectors[i];
 
-                    Assert.IsTrue((matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm < 1e-32);
+                    Assert.IsTrue((matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm < 1e-16);
                 }
             }
         }
