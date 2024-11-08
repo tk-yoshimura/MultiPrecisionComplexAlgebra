@@ -240,7 +240,7 @@ namespace MultiPrecisionComplexAlgebra {
 
                 for (int i = 0; i < Rows; i++) {
                     for (int j = 0; j < Columns; j++) {
-                        max_exponent = Math.Max(e[i, j].Exponent, max_exponent);
+                        max_exponent = long.Max(e[i, j].Exponent, max_exponent);
                     }
                 }
 
