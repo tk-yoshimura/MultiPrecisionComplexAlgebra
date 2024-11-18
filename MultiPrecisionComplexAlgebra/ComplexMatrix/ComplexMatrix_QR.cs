@@ -26,7 +26,7 @@ namespace MultiPrecisionComplexAlgebra {
             for (int k = 0; k < n - 1; k++) {
                 MultiPrecision<N> vsum = MultiPrecision<N>.Zero;
                 for (int i = k; i < n; i++) {
-                    vsum += r.e[i, k].Norm;
+                    vsum += r.e[i, k].SquareNorm;
                 }
                 MultiPrecision<N> vnorm = MultiPrecision<N>.Sqrt(vsum);
 
@@ -35,12 +35,12 @@ namespace MultiPrecisionComplexAlgebra {
                 }
 
                 Complex<N> x = r.e[k, k];
-                u.v[k] = Complex<N>.IsZero(x) ? vnorm : (x + x / x.Magnitude * vnorm);
-                MultiPrecision<N> usum = u.v[k].Norm;
+                u.v[k] = Complex<N>.IsZero(x) ? vnorm : (x + x / x.Norm * vnorm);
+                MultiPrecision<N> usum = u.v[k].SquareNorm;
 
                 for (int i = k + 1; i < n; i++) {
                     u.v[i] = r.e[i, k];
-                    usum += u.v[i].Norm;
+                    usum += u.v[i].SquareNorm;
                 }
                 MultiPrecision<N> c = 2 / usum;
 

@@ -207,7 +207,7 @@ namespace MultiPrecisionComplexAlgebra {
 
                 for (int i = 0; i < Rows; i++) {
                     for (int j = 0; j < Columns; j++) {
-                        sum_sq += e[i, j].Norm;
+                        sum_sq += e[i, j].SquareNorm;
                     }
                 }
 

@@ -17,9 +17,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TYoshimura.MultiPrecision" Version="6.4.1" />
+    <PackageReference Include="TYoshimura.MultiPrecision" Version="6.5.0" />
     <PackageReference Include="TYoshimura.MultiPrecision.Algebra" Version="2.3.2" />
-    <PackageReference Include="TYoshimura.MultiPrecision.Complex" Version="1.3.0" />
+    <PackageReference Include="TYoshimura.MultiPrecision.Complex" Version="1.4.0" />
   </ItemGroup>
 
 </Project>

@@ -71,7 +71,7 @@ namespace MultiPrecisionComplexAlgebra {
             }
 
             while (vs.Count < n) {
-                ComplexVector<N> g = init_vecs.OrderBy(u => vs.Select(v => ComplexVector<N>.Dot(u, v).Norm).Sum()).First();
+                ComplexVector<N> g = init_vecs.OrderBy(u => vs.Select(v => ComplexVector<N>.Dot(u, v).SquareNorm).Sum()).First();
 
                 ComplexVector<N> v = g;
 

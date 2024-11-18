@@ -57,12 +57,12 @@ namespace MultiPrecisionComplexAlgebra {
             ComplexMatrix<N> v = Identity(m.Rows), u = ScaleB(m, -exponent);
 
             for (int i = 0; i < n; i++) {
-                MultiPrecision<N> pivot_abs = u.e[i, i].Norm;
+                MultiPrecision<N> pivot_abs = u.e[i, i].SquareNorm;
                 int p = i;
 
                 for (int j = i + 1; j < n; j++) {
-                    if (u.e[j, i].Norm > pivot_abs) {
-                        pivot_abs = u.e[j, i].Norm;
+                    if (u.e[j, i].SquareNorm > pivot_abs) {
+                        pivot_abs = u.e[j, i].SquareNorm;
                         p = j;
                     }
                 }
@@ -135,12 +135,12 @@ namespace MultiPrecisionComplexAlgebra {
             v = v.Copy();
 
             for (int i = 0; i < n; i++) {
-                MultiPrecision<N> pivot_abs = u.e[i, i].Norm;
+                MultiPrecision<N> pivot_abs = u.e[i, i].SquareNorm;
                 int p = i;
 
                 for (int j = i + 1; j < n; j++) {
-                    if (u.e[j, i].Norm > pivot_abs) {
-                        pivot_abs = u.e[j, i].Norm;
+                    if (u.e[j, i].SquareNorm > pivot_abs) {
+                        pivot_abs = u.e[j, i].SquareNorm;
                         p = j;
                     }
                 }

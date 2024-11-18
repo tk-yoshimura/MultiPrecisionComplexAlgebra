@@ -185,7 +185,7 @@ namespace MultiPrecisionComplexAlgebra {
                 MultiPrecision<N> sum_sq = MultiPrecision<N>.Zero;
 
                 foreach (var vi in v) {
-                    sum_sq += vi.Norm;
+                    sum_sq += vi.SquareNorm;
                 }
 
                 return sum_sq;
