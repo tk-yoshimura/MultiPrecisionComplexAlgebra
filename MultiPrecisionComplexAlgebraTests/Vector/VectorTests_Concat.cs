@@ -21,7 +21,7 @@ namespace MultiPrecisionComplexAlgebraTests {
             Assert.AreEqual(new ComplexVector<Pow2.N4>(-1, -2, -2, 5, -3, -3, -3, -3), ComplexVector<Pow2.N4>.Concat(vector1, vector2, 5f, vector4));
             Assert.AreEqual(new ComplexVector<Pow2.N4>(-1, -2, -2, "6.2", -3, -3, -3, -3), ComplexVector<Pow2.N4>.Concat(vector1, vector2, "6.2", vector4));
 
-            Assert.ThrowsException<ArgumentException>(() => {
+            Assert.ThrowsExactly<ArgumentException>(() => {
                 ComplexVector<Pow2.N4>.Concat(vector1, vector2, 'b', vector4);
             });
         }
@@ -42,7 +42,7 @@ namespace MultiPrecisionComplexAlgebraTests {
             Assert.AreEqual(new ComplexVector<Pow2.N4>(-1, -2, -2, 5, -3, -3, -3, -3), ComplexVector<Pow2.N4>.Concat(vector1, vector2, 5f, vector4));
             Assert.AreEqual(new ComplexVector<Pow2.N4>(-1, -2, -2, "6.2", -3, -3, -3, -3), ComplexVector<Pow2.N4>.Concat(vector1, vector2, "6.2", vector4));
 
-            Assert.ThrowsException<ArgumentException>(() => {
+            Assert.ThrowsExactly<ArgumentException>(() => {
                 ComplexVector<Pow2.N4>.Concat(vector1, vector2, 'b', vector4);
             });
         }

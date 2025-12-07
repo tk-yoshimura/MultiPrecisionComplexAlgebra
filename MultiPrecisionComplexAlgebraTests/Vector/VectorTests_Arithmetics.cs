@@ -109,10 +109,10 @@ namespace MultiPrecisionComplexAlgebraTests {
                     continue;
                 }
 
-                Assert.IsTrue(((v[0] / c) - ((v / c)[0])).Norm < 1e-30);
-                Assert.IsTrue(((v[0] / r) - ((v / r)[0])).Norm < 1e-30);
-                Assert.IsTrue(((c / v[0]) - ((c / v)[0])).Norm < 1e-30);
-                Assert.IsTrue(((r / v[0]) - ((r / v)[0])).Norm < 1e-30);
+                Assert.IsLessThan(1e-30, ((v[0] / c) - ((v / c)[0])).Norm);
+                Assert.IsLessThan(1e-30, ((v[0] / r) - ((v / r)[0])).Norm);
+                Assert.IsLessThan(1e-30, ((c / v[0]) - ((c / v)[0])).Norm);
+                Assert.IsLessThan(1e-30, ((r / v[0]) - ((r / v)[0])).Norm);
             }
         }
 

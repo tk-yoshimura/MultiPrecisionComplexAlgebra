@@ -34,7 +34,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                     Console.WriteLine(b);
                     Console.WriteLine("");
 
-                    Assert.IsTrue((a - b).Norm < 1e-35);
+                    Assert.IsLessThan(1e-35, (a - b).Norm);
                 }
 
                 Console.WriteLine("");
@@ -63,7 +63,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                 Console.WriteLine(a);
                 Console.WriteLine(b);
 
-                Assert.IsTrue((a - b).Norm < 1e-35);
+                Assert.IsLessThan(1e-35, (a - b).Norm);
             }
         }
 
@@ -90,7 +90,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                 Console.WriteLine(a);
                 Console.WriteLine(b);
 
-                Assert.IsTrue((a - b).Norm < 1e-35);
+                Assert.IsLessThan(1e-35, (a - b).Norm);
             }
         }
 
@@ -124,7 +124,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                         Console.WriteLine(b);
                         Console.WriteLine("");
 
-                        Assert.IsTrue((a - b).Norm < 1e-34);
+                        Assert.IsLessThan(1e-34, (a - b).Norm);
                     }
 
                     Console.WriteLine("");
@@ -142,13 +142,13 @@ namespace MultiPrecisionComplexAlgebraTests {
                 (Complex<Pow2.N4>[] eigen_values, ComplexVector<Pow2.N4>[] eigen_vectors) = ComplexMatrix<Pow2.N4>.EigenValueVectors(matrix_scaled);
                 ComplexVector<Pow2.N4> eigen_values_expected = ComplexMatrix<Pow2.N4>.EigenValues(matrix_scaled);
 
-                Assert.IsTrue((eigen_values - eigen_values_expected).Norm < 1e-25);
+                Assert.IsLessThan(1e-25, (eigen_values - eigen_values_expected).Norm);
 
                 for (int i = 0; i < matrix_scaled.Size; i++) {
                     Complex<Pow2.N4> eigen_value = eigen_values[i];
                     ComplexVector<Pow2.N4> eigen_vector = eigen_vectors[i];
 
-                    Assert.IsTrue((matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm < 1e-32);
+                    Assert.IsLessThan(1e-32, (matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm);
                 }
             }
 
@@ -160,13 +160,13 @@ namespace MultiPrecisionComplexAlgebraTests {
                 (Complex<Pow2.N4>[] eigen_values, ComplexVector<Pow2.N4>[] eigen_vectors) = ComplexMatrix<Pow2.N4>.EigenValueVectors(matrix_scaled);
                 ComplexVector<Pow2.N4> eigen_values_expected = ComplexMatrix<Pow2.N4>.EigenValues(matrix_scaled);
 
-                Assert.IsTrue((eigen_values - eigen_values_expected).Norm < 1e-25);
+                Assert.IsLessThan(1e-25, (eigen_values - eigen_values_expected).Norm);
 
                 for (int i = 0; i < matrix_scaled.Size; i++) {
                     Complex<Pow2.N4> eigen_value = eigen_values[i];
                     ComplexVector<Pow2.N4> eigen_vector = eigen_vectors[i];
 
-                    Assert.IsTrue((matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm < 1e-32);
+                    Assert.IsLessThan(1e-32, (matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm);
                 }
             }
 
@@ -178,13 +178,13 @@ namespace MultiPrecisionComplexAlgebraTests {
                 (Complex<Pow2.N4>[] eigen_values, ComplexVector<Pow2.N4>[] eigen_vectors) = ComplexMatrix<Pow2.N4>.EigenValueVectors(matrix_scaled);
                 ComplexVector<Pow2.N4> eigen_values_expected = ComplexMatrix<Pow2.N4>.EigenValues(matrix_scaled);
 
-                Assert.IsTrue((eigen_values - eigen_values_expected).Norm < 1e-25);
+                Assert.IsLessThan(1e-25, (eigen_values - eigen_values_expected).Norm);
 
                 for (int i = 0; i < matrix_scaled.Size; i++) {
                     Complex<Pow2.N4> eigen_value = eigen_values[i];
                     ComplexVector<Pow2.N4> eigen_vector = eigen_vectors[i];
 
-                    Assert.IsTrue((matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm < 1e-16);
+                    Assert.IsLessThan(1e-16, (matrix_scaled * eigen_vector - eigen_value * eigen_vector).Norm);
                 }
             }
         }

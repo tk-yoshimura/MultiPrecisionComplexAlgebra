@@ -20,13 +20,13 @@ namespace MultiPrecisionComplexAlgebraTests {
 
             ComplexMatrix<Pow2.N4> a = u * ComplexMatrix<Pow2.N4>.FromDiagonals(s) * v.H;
 
-            Assert.IsTrue((u.Det.Norm - 1) < 1e-30);
-            Assert.IsTrue((uu - ComplexMatrix<Pow2.N4>.Identity(4)).Det.Norm < 1e-30);
+            Assert.IsLessThan(1e-30, u.Det.Norm - 1);
+            Assert.IsLessThan(1e-30, (uu - ComplexMatrix<Pow2.N4>.Identity(4)).Det.Norm);
 
-            Assert.IsTrue((v.Det.Norm - 1) < 1e-30);
-            Assert.IsTrue((vv - ComplexMatrix<Pow2.N4>.Identity(4)).Det.Norm < 1e-30);
+            Assert.IsLessThan(1e-30, v.Det.Norm - 1);
+            Assert.IsLessThan(1e-30, (vv - ComplexMatrix<Pow2.N4>.Identity(4)).Det.Norm);
 
-            Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - a).Norm) < 1e-30);
+            Assert.IsLessThan(1e-30, MultiPrecision<Pow2.N4>.Abs((m - a).Norm));
         }
 
         [TestMethod()]
@@ -47,13 +47,13 @@ namespace MultiPrecisionComplexAlgebraTests {
             ComplexMatrix<Pow2.N4> sm = ComplexMatrix<Pow2.N4>.VConcat(ComplexMatrix<Pow2.N4>.FromDiagonals(s), ComplexMatrix<Pow2.N4>.Zero(1, 4));
             ComplexMatrix<Pow2.N4> a = u * sm * v.H;
 
-            Assert.IsTrue((u.Det.Norm - 1) < 1e-30);
-            Assert.IsTrue((uu - ComplexMatrix<Pow2.N4>.Identity(5)).Det.Norm < 1e-30);
+            Assert.IsLessThan(1e-30, u.Det.Norm - 1);
+            Assert.IsLessThan(1e-30, (uu - ComplexMatrix<Pow2.N4>.Identity(5)).Det.Norm);
 
-            Assert.IsTrue((v.Det.Norm - 1) < 1e-30);
-            Assert.IsTrue((vv - ComplexMatrix<Pow2.N4>.Identity(4)).Det.Norm < 1e-30);
+            Assert.IsLessThan(1e-30, v.Det.Norm - 1);
+            Assert.IsLessThan(1e-30, (vv - ComplexMatrix<Pow2.N4>.Identity(4)).Det.Norm);
 
-            Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - a).Norm) < 1e-30);
+            Assert.IsLessThan(1e-30, MultiPrecision<Pow2.N4>.Abs((m - a).Norm));
         }
 
         [TestMethod()]
@@ -73,13 +73,13 @@ namespace MultiPrecisionComplexAlgebraTests {
             ComplexMatrix<Pow2.N4> sm = ComplexMatrix<Pow2.N4>.HConcat(ComplexMatrix<Pow2.N4>.FromDiagonals(s), ComplexMatrix<Pow2.N4>.Zero(4, 1));
             ComplexMatrix<Pow2.N4> a = u * sm * v.H;
 
-            Assert.IsTrue((u.Det.Norm - 1) < 1e-30);
-            Assert.IsTrue((uu - ComplexMatrix<Pow2.N4>.Identity(4)).Det.Norm < 1e-30);
+            Assert.IsLessThan(1e-30, u.Det.Norm - 1);
+            Assert.IsLessThan(1e-30, (uu - ComplexMatrix<Pow2.N4>.Identity(4)).Det.Norm);
 
-            Assert.IsTrue((v.Det.Norm - 1) < 1e-30);
-            Assert.IsTrue((vv - ComplexMatrix<Pow2.N4>.Identity(5)).Det.Norm < 1e-30);
+            Assert.IsLessThan(1e-30, v.Det.Norm - 1);
+            Assert.IsLessThan(1e-30, (vv - ComplexMatrix<Pow2.N4>.Identity(5)).Det.Norm);
 
-            Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - a).Norm) < 1e-30);
+            Assert.IsLessThan(1e-30, MultiPrecision<Pow2.N4>.Abs((m - a).Norm));
         }
 
         [TestMethod()]
@@ -116,13 +116,13 @@ namespace MultiPrecisionComplexAlgebraTests {
                         Console.WriteLine(vv);
                         Console.WriteLine(a);
 
-                        Assert.IsTrue((u.Det.Norm - 1) < 1e-30);
-                        Assert.IsTrue((uu - ComplexMatrix<Pow2.N4>.Identity(rows)).Det.Norm < 1e-30);
+                        Assert.IsLessThan(1e-30, u.Det.Norm - 1);
+                        Assert.IsLessThan(1e-30, (uu - ComplexMatrix<Pow2.N4>.Identity(rows)).Det.Norm);
 
-                        Assert.IsTrue((v.Det.Norm - 1) < 1e-30);
-                        Assert.IsTrue((vv - ComplexMatrix<Pow2.N4>.Identity(cols)).Det.Norm < 1e-30);
+                        Assert.IsLessThan(1e-30, v.Det.Norm - 1);
+                        Assert.IsLessThan(1e-30, (vv - ComplexMatrix<Pow2.N4>.Identity(cols)).Det.Norm);
 
-                        Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - a).Norm) < 1e-30);
+                        Assert.IsLessThan(1e-30, MultiPrecision<Pow2.N4>.Abs((m - a).Norm));
 
                         Console.WriteLine("");
                     }

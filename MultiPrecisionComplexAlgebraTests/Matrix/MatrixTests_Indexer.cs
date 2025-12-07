@@ -151,22 +151,22 @@ namespace MultiPrecisionComplexAlgebraTests {
             matrix_dst[.., ^2] = new Vector<Pow2.N4>(-1, -2, -3, -4);
             Assert.AreEqual(new ComplexMatrix<Pow2.N4>(new Complex<Pow2.N4>[,] { { 1, 2, 3, -1, 5 }, { 6, 7, 8, -2, 10 }, { 11, 12, 13, -3, 15 }, { 16, 17, 18, -4, 20 } }), matrix_dst);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => {
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => {
                 matrix_dst = ComplexMatrix<Pow2.N4>.Zero(matrix_src.Rows, matrix_src.Columns);
                 matrix_dst[0..^2, 0..^2] = matrix_src[1..^2, 1..^1];
             });
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => {
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => {
                 matrix_dst = ComplexMatrix<Pow2.N4>.Zero(matrix_src.Rows, matrix_src.Columns);
                 matrix_dst[0..^2, 0..^2] = matrix_src[1.., 1..^1];
             });
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => {
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => {
                 matrix_dst = ComplexMatrix<Pow2.N4>.Zero(matrix_src.Rows, matrix_src.Columns);
                 matrix_dst[0..^2, 0..^2] = matrix_src[1..^1, 1..^2];
             });
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => {
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => {
                 matrix_dst = ComplexMatrix<Pow2.N4>.Zero(matrix_src.Rows, matrix_src.Columns);
                 matrix_dst[0..^2, 0..^2] = matrix_src[1..^1, 1..];
             });

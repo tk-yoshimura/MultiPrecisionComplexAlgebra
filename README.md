@@ -2,7 +2,7 @@
  MultiPrecision Complex Algebra Implements 
 
 ## Requirement
-.NET 8.0  
+.NET 10.0  
 AVX2 suppoted CPU. (Intel:Haswell(2013)-, AMD:Excavator(2015)-)  
 [MultiPrecision](https://github.com/tk-yoshimura/MultiPrecision)  
 [MultiPrecisionComplex](https://github.com/tk-yoshimura/MultiPrecisionComplex)  

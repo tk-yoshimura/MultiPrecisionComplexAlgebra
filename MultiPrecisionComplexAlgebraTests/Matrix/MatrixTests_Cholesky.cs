@@ -15,7 +15,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                     ComplexMatrix<Pow2.N4> l = ComplexMatrix<Pow2.N4>.Cholesky(matrix);
                     ComplexMatrix<Pow2.N4> v = l * l.H;
 
-                    Assert.IsTrue((matrix - v).Norm < 1e-28);
+                    Assert.IsLessThan(1e-28, (matrix - v).Norm);
                 }
             }
         }
@@ -30,7 +30,7 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                     ComplexMatrix<Pow2.N4> r = ComplexMatrix<Pow2.N4>.InversePositiveHermitian(matrix);
 
-                    Assert.IsTrue((matrix * r - ComplexMatrix<Pow2.N4>.Identity(matrix.Size)).Norm < 1e-25);
+                    Assert.IsLessThan(1e-25, (matrix * r - ComplexMatrix<Pow2.N4>.Identity(matrix.Size)).Norm);
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                     ComplexVector<Pow2.N4> u = ComplexMatrix<Pow2.N4>.SolvePositiveHermitian(matrix, v);
                     ComplexVector<Pow2.N4> t = r * v;
 
-                    Assert.IsTrue((t - u).Norm < 1e-25);
+                    Assert.IsLessThan(1e-25, (t - u).Norm);
                 }
             }
         }

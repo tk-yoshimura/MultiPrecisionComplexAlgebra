@@ -118,10 +118,10 @@ namespace MultiPrecisionComplexAlgebraTests {
                     continue;
                 }
 
-                Assert.IsTrue(((m[0, 0] / c) - ((m / c)[0, 0])).Norm < 1e-30);
-                Assert.IsTrue(((m[0, 0] / r) - ((m / r)[0, 0])).Norm < 1e-30);
-                Assert.IsTrue(((c / m[0, 0]) - ((c / m)[0, 0])).Norm < 1e-30);
-                Assert.IsTrue(((r / m[0, 0]) - ((r / m)[0, 0])).Norm < 1e-30);
+                Assert.IsLessThan(1e-30, ((m[0, 0] / c) - ((m / c)[0, 0])).Norm);
+                Assert.IsLessThan(1e-30, ((m[0, 0] / r) - ((m / r)[0, 0])).Norm);
+                Assert.IsLessThan(1e-30, ((c / m[0, 0]) - ((c / m)[0, 0])).Norm);
+                Assert.IsLessThan(1e-30, ((r / m[0, 0]) - ((r / m)[0, 0])).Norm);
             }
         }
 
@@ -206,8 +206,8 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                     Console.WriteLine(k);
 
-                    Assert.IsTrue((k.Det.Norm - 1) < 1e-30);
-                    Assert.IsTrue((k - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm < 1e-30);
+                    Assert.IsLessThan(1e-30, k.Det.Norm - 1);
+                    Assert.IsLessThan(1e-30, (k - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm);
                 }
             }
         }
@@ -225,7 +225,7 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                         Console.WriteLine(k);
 
-                        Assert.IsTrue((k - matrix).Norm < 1e-27);
+                        Assert.IsLessThan(1e-27, (k - matrix).Norm);
                     }
                 }
             }
@@ -242,8 +242,8 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                     Console.WriteLine(k);
 
-                    Assert.IsTrue((k.Det.Norm - 1) < 1e-30);
-                    Assert.IsTrue((k - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm < 1e-30);
+                    Assert.IsLessThan(1e-30, k.Det.Norm - 1);
+                    Assert.IsLessThan(1e-30, (k - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm);
                 }
             }
 
@@ -256,8 +256,8 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                     Console.WriteLine(k);
 
-                    Assert.IsTrue((k.Det.Norm - 1) < 1e-30);
-                    Assert.IsTrue((k - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm < 1e-30);
+                    Assert.IsLessThan(1e-30, k.Det.Norm - 1);
+                    Assert.IsLessThan(1e-30, (k - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm);
                 }
             }
         }
@@ -282,7 +282,7 @@ namespace MultiPrecisionComplexAlgebraTests {
 
                     Console.WriteLine((p * m - lu).Norm);
 
-                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((p * m - lu).Norm) < 1e-30);
+                    Assert.IsLessThan(1e-30, MultiPrecision<Pow2.N4>.Abs((p * m - lu).Norm));
                 }
             }
         }
@@ -311,9 +311,9 @@ namespace MultiPrecisionComplexAlgebraTests {
                         }
                     }
 
-                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - qr).Norm) < 1e-30);
-                    Assert.IsTrue((u.Det.Norm - 1) < 1e-30);
-                    Assert.IsTrue((u - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm < 1e-30);
+                    Assert.IsLessThan(1e-30, MultiPrecision<Pow2.N4>.Abs((m - qr).Norm));
+                    Assert.IsLessThan(1e-30, u.Det.Norm - 1);
+                    Assert.IsLessThan(1e-30, (u - ComplexMatrix<Pow2.N4>.Identity(n)).Det.Norm);
                 }
             }
         }
@@ -340,9 +340,9 @@ namespace MultiPrecisionComplexAlgebraTests {
 
             Console.WriteLine((m - qr).Norm);
 
-            Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((m - qr).Norm) < 1e-30);
-            Assert.IsTrue((u.Det.Norm - 1) < 1e-30);
-            Assert.IsTrue((u - ComplexMatrix<Pow2.N4>.Identity(5)).Det.Norm < 1e-30);
+            Assert.IsLessThan(1e-30, MultiPrecision<Pow2.N4>.Abs((m - qr).Norm));
+            Assert.IsLessThan(1e-30, u.Det.Norm - 1);
+            Assert.IsLessThan(1e-30, (u - ComplexMatrix<Pow2.N4>.Identity(5)).Det.Norm);
         }
 
         [TestMethod]
@@ -362,7 +362,7 @@ namespace MultiPrecisionComplexAlgebraTests {
                     Console.WriteLine(x);
                     Console.WriteLine(r);
 
-                    Assert.IsTrue(MultiPrecision<Pow2.N4>.Abs((x - r).Norm) < 1e-30);
+                    Assert.IsLessThan(1e-30, MultiPrecision<Pow2.N4>.Abs((x - r).Norm));
                 }
             }
         }
